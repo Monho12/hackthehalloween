@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>404 // EMPASOFT: Night of the Bugs</title>
+  <meta name="description" content="404 — page not found. Hack the Halloween // EmpaSoft.">
+  <meta name="theme-color" content="#0b0614">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐛</text></svg>">
+
+  <!-- Тоглоомтой ижил фонт (интернетгүй үед monospace руу шилжинэ) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <!-- ⚠ GitHub Pages энэ хуудсыг ЯМАР Ч гүнтэй хаяг дээр (жишээ: /hack-the-halloween/a/b/c)
+       харуулдаг тул style.css-ийг холбохгүй, бүх загвар энд дотроо байна. -->
+  <style>
+    :root {
+      --bg: #0b0614;
+      --panel: rgba(18, 10, 30, 0.88);
+      --line: #3a2357;
+      --purple: #b07bff;
+      --purple-soft: rgba(176, 123, 255, 0.12);
+      --green: #39ff7a;
+      --orange: #ff7a1a;
+      --red: #ff3355;
+      --text: #e6dcf5;
+      --muted: #9a8bb3;
+      --mono: "Share Tech Mono", ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace;
+      --spooky: "Creepster", "Share Tech Mono", Impact, fantasy;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      background: radial-gradient(ellipse at 50% 0%, #241040 0%, var(--bg) 60%) fixed, var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      display: flex; flex-direction: column; align-items: center;
+      padding: clamp(16px, 4vw, 36px) 16px 28px;
+      overflow-x: hidden;
+    }
+    /* CRT scanline — тоглоомтой ижил мэдрэмж */
+    body::after {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 5;
+      background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px);
+    }
+    main { width: 100%; max-width: 900px; text-align: center; position: relative; z-index: 1; }
+
+    .banner {
+      position: relative; border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+      box-shadow: 0 0 40px rgba(176, 123, 255, 0.28), 0 0 0 1px rgba(176, 123, 255, 0.15) inset;
+      animation: flicker 6s infinite;
+    }
+    .banner img { display: block; width: 100%; height: auto; aspect-ratio: 1024 / 572; object-fit: cover; }
+    .banner .tag {
+      position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 4px;
+      background: rgba(255, 51, 85, 0.9); color: #fff; font-size: 0.75rem; letter-spacing: 0.15em;
+    }
+
+    .code {
+      font-family: var(--spooky); font-weight: normal; line-height: 1;
+      font-size: clamp(5rem, 22vw, 9.5rem); margin: 18px 0 0;
+      color: var(--purple); text-shadow: 0 0 24px rgba(176, 123, 255, 0.7), 3px 0 0 rgba(255, 51, 85, 0.6), -3px 0 0 rgba(57, 255, 122, 0.4);
+      animation: glitch 3.2s infinite steps(1);
+    }
+    .title { font-size: clamp(1.1rem, 4.5vw, 1.6rem); letter-spacing: 0.18em; margin: 6px 0 4px; color: var(--text); }
+    .sub { color: var(--muted); margin: 0 0 18px; }
+
+    .term {
+      text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+      padding: 14px 16px; font-size: 0.92rem; line-height: 1.7; margin: 0 auto 20px; max-width: 640px;
+      overflow-wrap: anywhere;
+    }
+    .term .ok { color: var(--green); }
+    .term .warn { color: var(--orange); }
+    .term .bad { color: var(--red); }
+    .term .path { color: var(--purple); }
+    .cursor::after { content: "▋"; color: var(--green); animation: blink 1s steps(1) infinite; margin-left: 2px; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px;
+      padding: 10px 20px; border-radius: 6px; border: 1px solid var(--purple); color: var(--text);
+      background: var(--purple-soft); text-decoration: none; font: inherit; letter-spacing: 0.08em;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover, .btn:focus-visible { background: rgba(176, 123, 255, 0.25); box-shadow: 0 0 16px rgba(176, 123, 255, 0.45); outline: none; }
+    .btn.primary { border-color: var(--green); color: var(--green); background: rgba(57, 255, 122, 0.08); }
+    .btn.primary:hover, .btn.primary:focus-visible { background: rgba(57, 255, 122, 0.18); box-shadow: 0 0 16px rgba(57, 255, 122, 0.4); }
+
+    footer { margin-top: 26px; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.12em; text-align: center; position: relative; z-index: 1; }
+
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes flicker { 0%, 96%, 100% { filter: none; } 97% { filter: brightness(1.4) hue-rotate(-12deg); } 98% { filter: brightness(0.7); } }
+    @keyframes glitch {
+      0%, 88%, 100% { transform: none; }
+      90% { transform: translate(-3px, 1px) skewX(-6deg); }
+      92% { transform: translate(3px, -1px) skewX(4deg); }
+      94% { transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="banner">
+      <img id="banner" src="./night-of-the-bugs.jpg" width="1024" height="572"
+           alt="EMPASOFT: Night of the Bugs — Something went wrong with the system...">
+      <span class="tag">⚠ ERROR 404</span>
+    </div>
+
+    <h1 class="code" aria-label="404">404</h1>
+    <div class="title">PAGE NOT FOUND</div>
+    <p class="sub">Энэ хуудсыг bug-ууд идчихжээ… 🐛</p>
+
+    <div class="term" aria-live="polite">
+      <div>&gt; GET <span class="path" id="req-path">/</span></div>
+      <div class="warn">&gt; ⚠ scanning sector… bugs detected: <span id="bug-count">404</span></div>
+      <div class="bad">&gt; ☠ ERROR 404: requested file was eaten by the bugs</div>
+      <div class="ok cursor">&gt; Тоглоом руу буцаж, системийг аврах ажлаа үргэлжлүүлээрэй</div>
+    </div>
+
+    <div class="actions">
+      <a class="btn primary" id="home-link" href="./">◀ ТОГЛООМ РУУ БУЦАХ</a>
+      <a class="btn" id="board-link" href="./#leaderboard">🏆 LEADERBOARD</a>
+    </div>
+  </main>
+
+  <footer>// EMPASOFT INSTITUTE OF TECHNOLOGY // HACK THE HALLOWEEN //</footer>
+
+  <script>
+    // GitHub Pages: 404.html нь /<repo>/ок/буруу/хаяг гэх мэт ямар ч гүнд харагдана.
+    // Тиймээс зураг, холбоосыг сайтын үндсэн хаягаас (project site бол /<repo>/) тооцно.
+    (function () {
+      var parts = location.pathname.split("/").filter(Boolean);
+      var base = /\.github\.io$/i.test(location.hostname) && parts.length ? "/" + parts[0] + "/" : "/";
+      if (location.protocol === "file:") base = "./";
+      document.getElementById("banner").src = base + "./night-of-the-bugs.jpg";
+      document.getElementById("home-link").href = base;
+      document.getElementById("board-link").href = base + "#leaderboard";
+      document.getElementById("req-path").textContent = location.pathname + location.hash || "/";
+      document.getElementById("bug-count").textContent = 300 + Math.floor(Math.random() * 700);
+    })();
+  </script>
+</body>
+</html>

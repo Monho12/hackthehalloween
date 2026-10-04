@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>HACK THE HALLOWEEN // EmpaSoft</title>
+  <meta name="description" content="A fictional Halloween cybersecurity escape game for EmpaSoft. No real systems are touched.">
+  <meta name="theme-color" content="#060708">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎃</text></svg>">
+
+  <!-- Фонт (интернетгүй үед автоматаар monospace фонт руу шилжинэ) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Арын binary бороо (зөвхөн чимэглэл) -->
+  <canvas id="bg-rain" aria-hidden="true"></canvas>
+  <!-- CRT дэлгэцийн scanline эффект -->
+  <div class="crt-overlay" aria-hidden="true"></div>
+
+  <!-- ===== HUD: баг, цаг, сануулга, явц ===== -->
+  <header id="hud" class="hud" hidden>
+    <!-- PC дээр: баг | цаг | сануулга нэг мөрөнд. Утсан дээр доод мөрөнд шилжинэ. -->
+    <div class="hud-inner">
+      <div class="hud-team">👥 TEAM: <span class="js-team">—</span></div>
+      <div class="hud-timer" id="hud-timer-wrap">
+        <span class="hud-timer-label">⏱ ҮЛДСЭН ХУГАЦАА:</span>
+        <span id="hud-timer" class="hud-timer-value">15:00</span>
+        <span id="hud-paused" class="hud-paused" hidden>⏸ PAUSED</span>
+      </div>
+      <div class="hud-hints">💡 Used Hints: <span class="js-hints">0</span></div>
+    </div>
+    <div class="hud-row">
+      <div class="hud-team">👥 <span class="js-team">—</span></div>
+      <div class="hud-progress" id="hud-progress" aria-label="Progress"></div>
+      <div class="hud-hints">💡 Used Hint: <span class="js-hints">0</span></div>
+    </div>
+    <div class="hud-keys" id="hud-keys" aria-label="Key fragments"></div>
+  </header>
+
+  <!-- ===== Үндсэн дэлгэц (JS энд зурна) ===== -->
+  <main id="app" class="app" aria-live="polite"></main>
+
+  <footer class="footer">
+    <span class="footer-spacer" aria-hidden="true"></span>
+    <span class="footer-text">// EMPASOFT INSTITUTE OF TECHNOLOGY // HACK THE HALLOWEEN // </span>
+    <button type="button" id="sound-toggle" class="sound-toggle" aria-label="Toggle sound">🔊</button>
+  </footer>
+
+  <!-- "ACCESS GRANTED" гэх мэт бүтэн дэлгэцийн анивчилт -->
+  <div id="flash" class="flash" hidden></div>
+  <!-- Ялалтын үеийн хулуу/сүнсний бороо -->
+  <div id="particles" class="particles" aria-hidden="true"></div>
+
+  <!-- ===== Зохион байгуулагчийн самбар (зөвхөн <линк>#admin хуудсанд) ===== -->
+  <div id="admin-modal" class="modal" hidden role="dialog" aria-modal="true" aria-label="Organizer console">
+    <div class="modal-panel" id="admin-panel"></div>
+  </div>
+
+  <!-- QR код үүсгэх сан (CDN). Ачаалагдахгүй бол тоглоом өөрөө fallback харуулна. -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script defer src="script.js"></script>
+</body>
+</html>
