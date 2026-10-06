@@ -32,14 +32,15 @@
       --spooky: "Creepster", "Share Tech Mono", Impact, fantasy;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; min-height: 100%; }
+    /* Scroll гаргахгүй: бүх зүйл нэг дэлгэцэнд багтана (баннер зураг өндрөөсөө хамаарч багасна) */
+    html, body { margin: 0; height: 100%; overflow: hidden; }
     body {
       background: radial-gradient(ellipse at 50% 0%, #241040 0%, var(--bg) 60%) fixed, var(--bg);
       color: var(--text);
       font-family: var(--mono);
-      display: flex; flex-direction: column; align-items: center;
-      padding: clamp(16px, 4vw, 36px) 16px 28px;
-      overflow-x: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100vh; height: 100dvh;
+      padding: clamp(12px, 3vh, 36px) 16px clamp(10px, 2.5vh, 28px);
     }
     /* CRT scanline — тоглоомтой ижил мэдрэмж */
     body::after {
@@ -53,7 +54,10 @@
       box-shadow: 0 0 40px rgba(176, 123, 255, 0.28), 0 0 0 1px rgba(176, 123, 255, 0.15) inset;
       animation: flicker 6s infinite;
     }
-    .banner img { display: block; width: 100%; height: auto; aspect-ratio: 1024 / 572; object-fit: cover; }
+    .banner img {
+      display: block; width: 100%; height: auto; aspect-ratio: 1024 / 572; object-fit: cover;
+      max-height: max(70px, calc(100vh - 15vh - 420px)); max-height: max(70px, calc(100dvh - 15dvh - 420px));
+    }
     .banner .tag {
       position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 4px;
       background: rgba(255, 51, 85, 0.9); color: #fff; font-size: 0.75rem; letter-spacing: 0.15em;
@@ -61,7 +65,7 @@
 
     .code {
       font-family: var(--spooky); font-weight: normal; line-height: 1;
-      font-size: clamp(5rem, 22vw, 9.5rem); margin: 18px 0 0;
+      font-size: clamp(3.5rem, min(22vw, 15vh), 9.5rem); margin: clamp(6px, 2vh, 18px) 0 0;
       color: var(--purple); text-shadow: 0 0 24px rgba(176, 123, 255, 0.7), 3px 0 0 rgba(255, 51, 85, 0.6), -3px 0 0 rgba(57, 255, 122, 0.4);
       animation: glitch 3.2s infinite steps(1);
     }
@@ -91,6 +95,15 @@
     .btn.primary:hover, .btn.primary:focus-visible { background: rgba(57, 255, 122, 0.18); box-shadow: 0 0 16px rgba(57, 255, 122, 0.4); }
 
     footer { margin-top: 26px; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.12em; text-align: center; position: relative; z-index: 1; }
+
+    /* Намхан дэлгэц: зай, текстийг шахна */
+    @media (max-height: 720px) {
+      .title { margin: 2px 0; }
+      .sub { margin: 0 0 10px; }
+      .term { padding: 8px 14px; line-height: 1.5; margin-bottom: 12px; font-size: 0.85rem; }
+      .btn { min-height: 40px; padding: 6px 16px; }
+      footer { margin-top: 12px; }
+    }
 
     @keyframes blink { 50% { opacity: 0; } }
     @keyframes flicker { 0%, 96%, 100% { filter: none; } 97% { filter: brightness(1.4) hue-rotate(-12deg); } 98% { filter: brightness(0.7); } }

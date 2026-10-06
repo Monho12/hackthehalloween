@@ -28,7 +28,7 @@ hack-the-halloween/
 | Address | Who uses it |
 |---|---|
 | `https://<your-site>/` | Every team PC |
-| `https://<your-site>/#admin` | Organizer only (PIN). Controls every PC. |
+| `https://<your-site>/#admin` | Organizer only (organizer password). Controls every PC. |
 | `https://<your-site>/#leaderboard` | Projector |
 
 ---
@@ -74,7 +74,7 @@ TIME LEFT  = TIME LIMIT − TOTAL TIME        (0 → TIME'S UP)
 
 ## 🛠 Organizer page (`#admin`)
 
-Open `https://<your-site>/#admin` on your own laptop or phone and enter the PIN (ask the game owner; change it in ⚙ SETTINGS before the event). This page is not a team: it doesn't appear in LIVE TEAMS and RESET ALL doesn't touch it. There is no shortcut on the normal game link. The console only opens at `#admin`.
+Open `https://<your-site>/#admin` on your own laptop or phone and enter the organizer password (ask the game owner; change it in ⚙ SETTINGS before the event). This page is not a team: it doesn't appear in LIVE TEAMS and RESET ALL doesn't touch it. There is no shortcut on the normal game link. The console only opens at `#admin`.
 
 Everything here applies to **every PC at once**:
 
@@ -88,16 +88,16 @@ Everything here applies to **every PC at once**:
 | 🔄 RESET ALL PCs | Sends every PC back to the team-name screen for a new round. The leaderboard is kept. |
 | 📡 LIVE TEAMS | Each PC's team, stage, time left and hints, updated every few seconds. |
 | 🏆 LEADERBOARD | Delete a result (✕), add demo data for testing, 🗑 CLEAR ALL, open the projector view. |
-| ⚙ SETTINGS → SAVE | Answers, master password, hint penalties, PIN, QR base URL. Every PC updates instantly, even mid-game (progress and hints are kept). |
+| ⚙ SETTINGS → SAVE | Answers, master password, hint penalties, organizer password, QR base URL. Every PC updates instantly, even mid-game (progress and hints are kept). |
 | ↺ RESTORE DEFAULTS | Back to `DEFAULT_CONFIG` from `script.js` on every PC. |
 
 > Change settings **before** a round starts. Changing an answer mid-game redraws the team's screen, and changing the master password changes the fragments they have already collected.
 
-On a team's win or TIME'S UP screen, **↺ ДАХИН ЭХЛЭХ** (3 clicks to confirm) resets that one PC and removes that team's result from the leaderboard.
+On a team's win or TIME'S UP screen, **↺ ДАХИН ЭХЛЭХ** (2 clicks to confirm) resets that one PC and removes that team's result from the leaderboard.
 
 ### Default values in `script.js`
 
-`DEFAULT_CONFIG` at the top of `script.js` holds the timer, hint penalties, QR base URL and Firebase URL. The default answers, phone quiz and PIN hash are stored **encoded** in `SECRET_DEFAULTS`, so they can't be read from the source. Change answers and the PIN on the organizer page (⚙ SETTINGS). The puzzles rebuild themselves from the words: change the Stage 1 word and the binary changes to match, and the same goes for the cipher and the hidden sentences.
+`DEFAULT_CONFIG` at the top of `script.js` holds the timer, hint penalties, QR base URL and Firebase URL. The default puzzles are stored **encrypted** in `SEALED_DEFAULTS` (see 🛡 Anti-cheat), so the answers are not in the source. Change answers and the organizer password on the organizer page (⚙ SETTINGS). To rebuild `SEALED_DEFAULTS` itself, run `build-defaults.mjs` (usage is at the top of that file) with a plain JSON file that you keep **outside** the repo. The puzzles rebuild themselves from the words: change the Stage 1 word and the binary changes to match, and the same goes for the cipher and the hidden sentences.
 
 > If you set the Stage 5 password by hand, also update the Stage 5 note so the clue still makes sense.
 > If you change the master password, also change the final hint, because the default hint is about "turning it off and on again".
@@ -122,14 +122,17 @@ If a PC briefly loses internet, its game keeps running and unsent results are se
 
 ## 🛡 Anti-cheat (DevTools / F12)
 
-The game hides what a quick F12 look would reveal:
+The answers are **not** in `script.js`, in Firebase `/config` or in `localStorage`, so reading or debugging the JavaScript doesn't reveal them:
 
-- Answers, the PIN, and each PC's game progress are stored **encoded** in `localStorage`, in Firebase `/config` and in `script.js`. Nothing readable shows up in the Application, Network or Sources tabs.
-- Progress has a checksum: if someone edits it by hand (for example to jump to the final stage), the game rejects it and starts fresh.
-- The PIN is stored only as a SHA-256 hash. Use **8+ characters**: a 4-digit PIN can be guessed by trying all 10,000 options.
+- Each stage's key fragment is **encrypted with that stage's answer** (PBKDF2 → AES-GCM). Typing the right answer is the only way to decrypt it, and that is also how the game checks answers. Each wrong guess costs about 0.1 s, so trying a word list is slow.
+- The puzzles (binary, cipher, hidden sentences) are stored already built, never as the answer word.
+- The final master password only exists as the 6 fragments, so you can't get it without solving every stage.
+- The Stage 4 fragment inside the QR code is encrypted with the correct answer to the phone quiz.
+- The organizer settings and answer key are encrypted with the **organizer password**. Use **12+ characters** (e.g. 3–4 random words): anyone can download the encrypted copy and try passwords offline.
+- Progress has a checksum: if someone edits it by hand (for example to jump to the final stage), the game rejects it. Jumping ahead also doesn't help, because the skipped fragments stay locked.
 - All code runs inside a closure, so `CONFIG` or `state` can't be changed from the DevTools console.
 
-⚠ Without a server, a very determined student who reads and debugs the JavaScript can still decode it. The strongest protection is to **turn DevTools off on the lab PCs** (this also blocks `view-source:`). In an administrator Command Prompt on each PC:
+⚠ DevTools can still show what is on screen anyway (the puzzles themselves), and the Firebase database is still writable by anyone who knows its URL (see below). As an extra layer, **turn DevTools off on the lab PCs** (this also blocks `view-source:`). In an administrator Command Prompt on each PC:
 
 ```bat
 reg add "HKLM\SOFTWARE\Policies\Google\Chrome" /v DeveloperToolsAvailability /t REG_DWORD /d 2 /f
@@ -177,7 +180,7 @@ To update the game later, edit the files and upload or push again, then refresh 
 
 - [ ] Host the game and test one full round with 2–3 PCs: START from `#admin`, play to the end, check the leaderboard, RESET ALL.
 - [ ] Scan the Stage 4 QR with an iPhone and an Android phone.
-- [ ] Change the PIN and, ideally, the answers in ⚙ SETTINGS (then press SAVE once, so Firebase only holds encoded data).
+- [ ] Change the organizer password and, ideally, the answers in ⚙ SETTINGS, then press SAVE.
 - [ ] Turn off DevTools on the lab PCs (see 🛡 Anti-cheat).
 - [ ] Check that the lab network allows `*.github.io`, `cdnjs.cloudflare.com` and `*.firebasedatabase.app`, and that students' phones have internet.
 - [ ] On every PC, open the game URL in **full screen (F11)** at 100% zoom, sound low (or 🔇).
