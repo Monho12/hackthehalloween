@@ -236,7 +236,7 @@
   // 🔒 Анхны тохиргоо — ШИФРЛЭГДСЭН (хариулт агуулаагүй). build-defaults.mjs үүсгэнэ.
   // Organizer password-оор #admin-д нэвтэрч ⚙ SETTINGS-ээс өөрчилнө.
   // prettier-ignore
-  const SEALED_DEFAULTS = /*SEALED*/{"v":2,"hintPenalties":[30,45,60,90,120],"hintPenaltyEnabled":true,"qrBaseUrl":"","finalHint":"IT туслах ажилтан хамгийн түрүүнд юу гэж асуудаг вэ? “Унтраагаад дахин асаагаад үзсэн үү?” — үүнийг англиар НЭГ үгээр хэлдэг.","stage1Bin":["01000011","01000001","01001110","01000100","01011001"],"stage2Cipher":"KDOORZHHQ","stage2Shift":3,"stage3Lines":["Every file now ends with the same word: boo.","Monitors flicker orange whenever the clock strikes twelve.","Pale light pours out of the locked computer lab.","Abandoned terminals blink with messages nobody typed.","Shadows crawl across the server room at midnight.","Old hard drives spin up all on their own.","Fog crawls slowly under the classroom door.","The clock in the hallway has stopped at 3:13."],"stage5Note":"","stage6Code":"password = \"ghost\"\n\nif password == \"ghost\"\n    print(\"ACCESS GRANTED\")","qrLock":{"salt":"p9QtMjIbS+Y3drCoNVTqdw==","boxes":[{"iv":"GXFCp/o8L7ddwe3v","ct":"RIKlRzQtxmrIYkSlpqaayOeBrImxtCQvtx7kah8="}]},"stages":[{"salt":"ouYlFBb2Gbgw0tMMXPeccw==","boxes":[{"iv":"A5zxIhlluj25Ga/c","ct":"f8T/9YIikgI/czzt35Vjrxp96appjMSYzg=="}]},{"salt":"fa6ZSeJjOHAZ2CjzDpRAlQ==","boxes":[{"iv":"7Oo4C3ZHnPUJCP+y","ct":"cQtTtO6lVV1eOHivXEdz8rrKFtnYdRE95A=="}]},{"salt":"5C4Y/cmfA+hyUINRvvNqhQ==","boxes":[{"iv":"STGEj6ZD6KPGTmP+","ct":"UzdoSYbqiFfKO8CmRWd7dmfEL23MDC+E/A=="}]},{"salt":"VXOY+qKJulBK31LVuSPTng==","boxes":[{"iv":"F6Apvrjjua08hBYq","ct":"nH0Jn2mHzQvR+QJID0IEjP79b+SmP+l8WQ=="}]},{"salt":"pHyEeSZ9Vb+4+EV5YYeNpQ==","boxes":[{"iv":"rc2oBC6Jl/NMMe5H","ct":"M8452AWANtFkDYEVSIJ9XRqevPfu0ZioKw=="}]},{"salt":"eLUGWKqVWjN/XDieXzJkYQ==","boxes":[{"iv":"481CxiI8zA+xe9dr","ct":"XpUFHo+ogV1si0ttI3djTdpUmHF4geTDFA=="},{"iv":"VY5fgkEQ0C0rjcor","ct":"6JaJJUCASzM2/wt+SqRDkzNU1micRp7QzA=="},{"iv":"usoOKC9af6d2s2yP","ct":"w2VKNLa4RKd0MT7ErxQX6i0vSj4gPAw9eQ=="},{"iv":"evBxEntJRwcRauwl","ct":"AS5JbxniAGATrE0rB3XOL0qNt81ABNkGsA=="},{"iv":"C10bpo74lOxKdn+9","ct":"ZF4fWwaXkGZCRBRJwAO8iJCOCwzsY0hsog=="},{"iv":"8mnDhk/9kIm0n6Nk","ct":"Wjjz/oYNQ9/YS+tHfZ3ghx/eUrq7UR0+tQ=="}]}],"final":{"salt":"St+DOOFvlFe68CCpe7wpYw==","boxes":[{"iv":"qgXer1W0wyclDUmk","ct":"wvJsQAOZYzfUTJVZKUMgcj7kTbxcIuJT"}]},"vault":{"salt":"D5ZmaNKvI68KSPnxOzusGw==","box":{"iv":"42w/+JwPCE8TpMJ5","ct":"5C+05knA4KQurzGNYMg+1MDP9zk8ytFvEedKFsZEnnoOQk1TSaFbah9CX8A+MOuY5iOloUag8g9tFOokDEH3G/VkH3nc0kyxNF/IPnJOl/foOuXPBYz+XpYVp9U89UDWwWZ1NhGGGjsKjMh+GKkm5QRqyldA/lCyusku+b0VBGaAMJS+pwaPAuqd0x/frZtCtZnJrlV8nfPAtqQ8v30wzJqyMrIPjVsRFsAnlbqU4680v0nrN1CpvFGxFXecm7B1odiHWoS2eJ3bvC+IQgmGREN0s0JisZI/PuwPrHCpM/87YGSWuoICFg14jn+sXv6SHXYuEPmu+M8pSu7SDqjRWrJ7PFZCdQsv1gwXSyT4XBUSEv0sbhKeOcJAiBhwygAa5uXFysCd/CW0JDGgzOp/yJsZx51fjQ5hZhc5N2DH1vAxfx2es6a4gQhkS1R2c2Zf0o0QMBjpo4NQcvkWla107j1TH9ScUpDoU60N4RqiYK55HUl5jOB9Xa0O1pCRL49NQaCmkKZtF3v517CCKEKqO7RLC5X7+LIU2+7rDONYeh/U9mWiF7qwVk8b/GlLPjlpmgFlqmKOyxGCcXO6YxiHNk6TCQH/R3BBPLPCqfj+/9DmYsYHG9rSjlOioh73GNmYicupeR1yQPC1dOSuo964empU/Xtppw0T3V5UKn2AX0BnESpueqG058bEA3ibwdbaC/CXzkNV3xQ6uh0aR+3P1SxBcFFNr2bNs2HzYnyjOnN1YnYjoN4l/AQpY4B7gt7Jmb/CwruPKknSH1Din/solWBAXDC9IdOri6seXVMzTpSspisdxc+2Y3nQvPypuHf8LdwIPfh3ohgwOpk8QWJTM0a8U27/QenJGOmogTCO7CNm5jy7mz70ptw5UsCv6CoRb/eAu6J0L/NLyLnubAkfygq8B/VTwYyxm7ubZHvqrgBMr5FtE+9tTQ=="}}} /*END*/
+  const SEALED_DEFAULTS = /*SEALED*/{"v":2,"hintPenalties":[30,45,60,90,120],"hintPenaltyEnabled":true,"qrBaseUrl":"","finalHint":"IT туслах ажилтан хамгийн түрүүнд юу гэж асуудаг вэ? “Унтраагаад дахин асаагаад үзсэн үү?” — үүнийг англиар НЭГ үгээр хэлдэг.","stage1Bin":["01000011","01000001","01001110","01000100","01011001"],"stage2Cipher":"KDOORZHHQ","stage2Shift":3,"stage3Lines":["Every file now ends with the same word: boo.","Monitors flicker orange whenever the clock strikes twelve.","Pale light pours out of the locked computer lab.","Abandoned terminals blink with messages nobody typed.","Shadows crawl across the server room at midnight.","Old hard drives spin up all on their own.","Fog crawls slowly under the classroom door.","The clock in the hallway has stopped at 3:13."],"stage5Note":"","stage6Code":"code = \"GHOST\"\n\nif code[3] == \"O\":\n    print(\"ACCESS GRANTED\")","qrLock":{"salt":"p9QtMjIbS+Y3drCoNVTqdw==","boxes":[{"iv":"GXFCp/o8L7ddwe3v","ct":"RIKlRzQtxmrIYkSlpqaayOeBrImxtCQvtx7kah8="}]},"stages":[{"salt":"ouYlFBb2Gbgw0tMMXPeccw==","boxes":[{"iv":"A5zxIhlluj25Ga/c","ct":"f8T/9YIikgI/czzt35Vjrxp96appjMSYzg=="}]},{"salt":"fa6ZSeJjOHAZ2CjzDpRAlQ==","boxes":[{"iv":"7Oo4C3ZHnPUJCP+y","ct":"cQtTtO6lVV1eOHivXEdz8rrKFtnYdRE95A=="}]},{"salt":"5C4Y/cmfA+hyUINRvvNqhQ==","boxes":[{"iv":"STGEj6ZD6KPGTmP+","ct":"UzdoSYbqiFfKO8CmRWd7dmfEL23MDC+E/A=="}]},{"salt":"VXOY+qKJulBK31LVuSPTng==","boxes":[{"iv":"F6Apvrjjua08hBYq","ct":"nH0Jn2mHzQvR+QJID0IEjP79b+SmP+l8WQ=="}]},{"salt":"pHyEeSZ9Vb+4+EV5YYeNpQ==","boxes":[{"iv":"rc2oBC6Jl/NMMe5H","ct":"M8452AWANtFkDYEVSIJ9XRqevPfu0ZioKw=="}]},{"salt":"eLUGWKqVWjN/XDieXzJkYQ==","boxes":[{"iv":"481CxiI8zA+xe9dr","ct":"XpUFHo+ogV1si0ttI3djTdpUmHF4geTDFA=="},{"iv":"VY5fgkEQ0C0rjcor","ct":"6JaJJUCASzM2/wt+SqRDkzNU1micRp7QzA=="},{"iv":"usoOKC9af6d2s2yP","ct":"w2VKNLa4RKd0MT7ErxQX6i0vSj4gPAw9eQ=="},{"iv":"evBxEntJRwcRauwl","ct":"AS5JbxniAGATrE0rB3XOL0qNt81ABNkGsA=="},{"iv":"C10bpo74lOxKdn+9","ct":"ZF4fWwaXkGZCRBRJwAO8iJCOCwzsY0hsog=="},{"iv":"8mnDhk/9kIm0n6Nk","ct":"Wjjz/oYNQ9/YS+tHfZ3ghx/eUrq7UR0+tQ=="}]}],"final":{"salt":"St+DOOFvlFe68CCpe7wpYw==","boxes":[{"iv":"qgXer1W0wyclDUmk","ct":"wvJsQAOZYzfUTJVZKUMgcj7kTbxcIuJT"}]},"vault":{"salt":"D5ZmaNKvI68KSPnxOzusGw==","box":{"iv":"42w/+JwPCE8TpMJ5","ct":"5C+05knA4KQurzGNYMg+1MDP9zk8ytFvEedKFsZEnnoOQk1TSaFbah9CX8A+MOuY5iOloUag8g9tFOokDEH3G/VkH3nc0kyxNF/IPnJOl/foOuXPBYz+XpYVp9U89UDWwWZ1NhGGGjsKjMh+GKkm5QRqyldA/lCyusku+b0VBGaAMJS+pwaPAuqd0x/frZtCtZnJrlV8nfPAtqQ8v30wzJqyMrIPjVsRFsAnlbqU4680v0nrN1CpvFGxFXecm7B1odiHWoS2eJ3bvC+IQgmGREN0s0JisZI/PuwPrHCpM/87YGSWuoICFg14jn+sXv6SHXYuEPmu+M8pSu7SDqjRWrJ7PFZCdQsv1gwXSyT4XBUSEv0sbhKeOcJAiBhwygAa5uXFysCd/CW0JDGgzOp/yJsZx51fjQ5hZhc5N2DH1vAxfx2es6a4gQhkS1R2c2Zf0o0QMBjpo4NQcvkWla107j1TH9ScUpDoU60N4RqiYK55HUl5jOB9Xa0O1pCRL49NQaCmkKZtF3v517CCKEKqO7RLC5X7+LIU2+7rDONYeh/U9mWiF7qwVk8b/GlLPjlpmgFlqmKOyxGCcXO6YxiHNk6TCQH/R3BBPLPCqfj+/9DmYsYHG9rSjlOioh73GNmYicupeR1yQPC1dOSuo964empU/Xtppw0T3V5UKn2AX0BnESpueqG058bEA3ibwdbaC/CXzkNV3xQ6uh0aR+3P1SxBcFFNr2bNs2HzYnyjOnN1YnYjoN4l/AQpY4B7gt7Jmb/CwruPKknSH1Din/solWBAXDC9IdOri6seXVMzTpSspisdxc+2Y3nQvPypuHf8LdwIPfh3ohgwOpk8QWJTM0a8U27/QenJGOmogTCO7CNm5jy7mz70ptw5UsCv6CoRb/eAu6J0L/NLyLnubAkfygq8B/VTwYyxm7ubZHvqrgBMr5FtE+9tTQ=="}}}/*END*/
 
   /* ================================================================
    1. ТОХИРГОО — анхны (default) утгууд.
@@ -581,10 +581,11 @@
     if (String(CONFIG.stage5Note || "").trim()) return CONFIG.stage5Note;
     return (
       "ӨӨРТӨӨ САНУУЛАХ НЬ: (БИТГИЙ МАРТААРАЙ!!!)\n" +
-      "Нууц үгээ байнга мартаад байдаг болохоор амархан санахаар нэгийг зохиочихлоо:\n\n" +
-      "   [нууц серверээс олдсон үг]\n" +
-      " + [Caesar шифрийн нууц үг хэдэн үсэгтэй вэ]\n\n" +
-      "Үүнийг ХЭН Ч ХЭЗЭЭ Ч тааж чадахгүй. 😎\n— admin"
+      "Нууц үгээ байнга мартаад байдаг болохоор амархан санахаар нэгийг зохиочихлоо\n" +
+      "Нууц үг:\n\n" +
+      "   [QR-аас олсон үг] +\n" +
+      "   [1-р даалгаврын нууц үг хэдэн үсэгтэй вэ?]\n\n" +
+      "Үүнийг ХЭН Ч ХЭЗЭЭ Ч тааж чадахгүй.\n— admin"
     );
   }
 
@@ -645,6 +646,15 @@
     const shift = shiftOf(CONFIG);
     const cipher = CONFIG.stage2Cipher || "";
     const lines = CONFIG.stage3Lines || [];
+    // 3-р шат: мөрүүдийн эхний үсэг = нууц үг. Харагдах мөрүүдийг холиод
+    // (acrostic ажиллахгүй), жинхэнэ үсгүүдийг мөр бүрийн төгсгөлд бараг
+    // үл харагдах өнгөөр дарааллаар нь нууна (Ctrl+A / F12-аар л харагдана).
+    const hiddenLetters = lines.map((l) => (l.trim()[0] || "").toUpperCase());
+    const shuffledLines = lines
+      .map((l, k) => [l, (k * 5 + 3) % 7 + k / 100])
+      .sort((a, b) => a[1] - b[1])
+      .map(([l]) => l);
+    const logLevels = ["INFO", "WARN", "ERROR", "INFO", "DEBUG", "WARN", "INFO", "ERROR"];
     const lock = (k) => (CONFIG.stages || [])[k];
     const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -658,15 +668,15 @@
         puzzle: () => `
         <div class="term">
           <div class="term-label">&gt; cat intercepted_signal.bin</div>
-          <div class="binary">${bytes.map((b) => `<span>${b}</span>`).join("")}</div>
+          <div class="binary">${bytes.map((b, k) => `<span${k >= bytes.length - 4 ? ' class="nocopy"' : ""}>${b}</span>`).join("")}</div>
           <div class="term-foot">1 байт = 8 бит = 1 үсэг | ${bytes.length} байт = ${Math.ceil(bytes.length)} үсэг</div>
         </div>`,
         label: "тайлсан үг",
         placeholder: "Type your answer…",
         lock: lock(0),
         hints: [
-          "Энэ мессежийг компьютер хүнээс арай өөрөөр уншина. Тоонуудыг үсэг болгох түлхүүрийг хай.",
-          "Эхний 3 цифрийг алгасаад, сүүлийн 5 цифрийг ашигла. 1 байгаа байрлалуудын утгыг нэмээд, гарсан тоог A=1, B=2, C=3... гэж үсэг болго.",
+          "Binary-г эхлээд Decimal болго. Дараа нь Text рүү хөрвүүлээд үз.",
+          "Google-ээс хай.",
         ],
         lesson:
           "Компьютер үсэг бүрийг тоо болгож хадгалдаг: <b>A = 65 = 01000001</b>. Энэ стандартыг <b>ASCII</b> гэдэг. Таны дэлгэц дээрх бүх бичвэр цаанаа зөвхөн 0, 1-ээс бүтдэг.",
@@ -704,14 +714,19 @@
         puzzle: () => `
         <div class="term">
           <div class="term-label">&gt; cat recovered_log_31-10.txt</div>
-          <ol class="log">${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ol>
+          <ol class="log">${shuffledLines
+            .map(
+              (l, k) =>
+                `<li><span class="log-ts">[23:${pad2(13 + k)}:${pad2((k * 17 + 4) % 60)}] ${logLevels[k % logLevels.length]}</span> ${esc(l)}<span class="ghost">${" ".repeat(6)}${esc(hiddenLetters[k] || "")}</span></li>`,
+            )
+            .join("")}</ol>
         </div>`,
         label: "нуугдсан мессеж",
         placeholder: "Enter the hidden message…",
         lock: lock(2),
         hints: [
-          "Заримдаа эхлэл нь бусдаасаа илүү чухал байдаг шүү.",
-          "Мөр бүрийн зөвхөн <b>ЭХНИЙ үсгийг</b> дээрээс доош нь уншаад үз.",
+          "Бүх зүйл нүдэнд харагддаггүй. Хакерууд дэлгэцийг биш, <b>цаад өгөгдлийг</b> нь уншдаг.",
+          "Log-ийг бүхэлд нь <b>сонгоод</b> үз (<code>Ctrl + A</code>), эсвэл <code>F12</code> дарж кодыг нь хар. Мөр бүрийн төгсгөлд нэг үсэг нуугдсан.",
         ],
         lesson:
           "Энгийн мэт харагдах зүйл дотор мессеж нуухыг <b>стеганографи</b> гэдэг. Халдагчид хамгаалалтын программд баригдахгүйн тулд өгөгдлөө зураг, хөгжим, текст дотор нууж оруулдаг.",
@@ -758,7 +773,7 @@
           <div class="login-status" id="login-status">SYSTEM LOCKED 🔒</div>
           <label for="answer-input" class="login-label">Password:</label>
           <div class="login-input-row">
-            <input id="answer-input" type="password" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="••••••••">
+            <input id="answer-input" class="masked" type="text" name="hth-unlock" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="••••••••" data-lpignore="true" data-1p-ignore data-form-type="other">
             <button type="button" class="btn peek" id="peek" aria-label="Show password">👁</button>
           </div>
           <button type="submit" class="btn btn-primary btn-block" id="submit-btn">[ UNLOCK ]</button>
@@ -778,22 +793,22 @@
         key: "bug",
         title: "FIND THE BUG",
         mission:
-          "Вирусын эх код задарчихлаа! Дотор нь нэг алдаа (bug) байна. Алдааг олж, вирусыг зогсоо.",
+          "Вирусын эх код задарчихлаа! Энэ код <b>ACCESS GRANTED</b> гэж хэвлэх ёстой ч юу ч хэвлэхгүй байна. Нэг тоо буруу бичигдсэн. Түүнийг засаж вирусыг зогсоо.",
         puzzle: () => `
         <div class="term">
           <div class="term-label">&gt; cat virus_core.py</div>
           <pre class="code">${highlightPython(String(CONFIG.stage6Code))}</pre>
-          <div class="question">❓ Энэ кодонд юу дутуу байна вэ?</div>
+          <div class="question">❓ <code>[3]</code>-ын оронд ямар тоо бичвэл ACCESS GRANTED хэвлэгдэх вэ?</div>
         </div>`,
-        label: "юу дутуу байна?",
-        placeholder: "Тэмдэгт эсвэл үг бич…",
+        label: "зөв тоо",
+        placeholder: "Зөвхөн тоо бич…",
         lock: lock(5),
         hints: [
-          "<code>if</code>-ээр эхэлсэн мөрийг сайн хар. Python-д ийм мөрийн ТӨГСГӨЛД заавал нэг зүйл байх ёстой.",
-          "Энэ бол хоёр цэг нэгнийхээ дээр давхарласан цэг таслалын тэмдэг.",
+          "<code>code[3]</code> нь <code>\"GHOST\"</code> үгийн нэг үсгийг авна. Аль үсгийг авч байгааг тоолоод үз. Энэ нь <code>\"O\"</code> мөн үү?",
+          "Python тоолохдоо <b>0-ээс</b> эхэлдэг: G=0, H=1, O=?, S=3, T=4.",
         ],
         lesson:
-          "Ганцхан хоёр цэг (:) дутуу байхад л <b>SyntaxError</b> гарна. Кодын өчүүхэн алдаа ч бодит аюулгүй байдлын цоорхой болж хувирдаг. Тиймээс хөгжүүлэгчид code review, linter, тест заавал ашигладаг.",
+          "Ихэнх програмчлалын хэлэнд тоолол <b>0-ээс</b> эхэлдэг. Нэгээр зөрөх энэ алдааг <b>off-by-one error</b> гэдэг бөгөөд програмистуудын хамгийн түгээмэл алдааны нэг. Кодын өчүүхэн алдаа ч бодит аюулгүй байдлын цоорхой болж хувирдаг тул хөгжүүлэгчид code review, тест заавал ашигладаг.",
       },
     ];
   }
@@ -803,9 +818,13 @@
   function finalPatternHint() {
     const frags = state.frags || [];
     const first = String(frags[FRAGMENT_ORDER.indexOf(0)] || "?")[0];
-    const last = String(frags[FRAGMENT_ORDER.indexOf(TOTAL_STAGES - 1)] || "?").slice(-1);
+    const last = String(
+      frags[FRAGMENT_ORDER.indexOf(TOTAL_STAGES - 1)] || "?",
+    ).slice(-1);
     const len = frags.reduce((n, f) => n + String(f || "").length, 0);
-    const blanks = Array(Math.max(0, len - 2)).fill("_").join(" ");
+    const blanks = Array(Math.max(0, len - 2))
+      .fill("_")
+      .join(" ");
     return `Үг <b>${esc(first)}</b> үсгээр эхэлж, <b>${esc(last)}</b> үсгээр төгсөнө: <code>${esc(`${first} ${blanks} ${last}`)}</code>`;
   }
   const FINAL_HINTS = () => [
@@ -1023,7 +1042,6 @@
       <h1 class="title glitch" data-text="HACK THE HALLOWEEN"><small>EMPASOFT INSTITUTE OF TECHNOLOGY // 31.10</small>HACK THE HALLOWEEN</h1>
       <div class="hacked-banner">⚠ EMPASOFT SYSTEM HAS BEEN HACKED ⚠</div>
       <p class="muted">Halloween-ийн хортой программ EMPASOFT-ийн системийг түгжчихлээ. <br/> <b>Танай баг системийг сэргээх ёстой!</b></p>
-      <div class="start-countdown waiting" id="start-status">STARTING SOON</div>
       <form class="start-form" id="team-form" autocomplete="off">
         <label for="team-input">БАГИЙН НЭРЭЭ ОРУУЛНА УУ:</label>
         <div class="answer-row">
@@ -1039,22 +1057,6 @@
     </section>`,
       () => {
         const input = $("#team-input");
-        // 🚦 Нийтийн эхлэлийн төлөв (default: STARTING SOON)
-        const status = $("#start-status");
-        const upd = () => {
-          if (!document.body.contains(status)) return clearInterval(si);
-          const t = scheduledStartMs();
-          const left = t ? Math.ceil((t - now()) / 1000) : 0;
-          status.classList.toggle("waiting", !t || left <= 0);
-          status.classList.toggle("soon", !!t && left > 0 && left <= 10);
-          status.textContent = !t
-            ? "STARTING SOON"
-            : left > 0
-              ? fmt(left)
-              : "GAME IN PROGRESS";
-        };
-        const si = setInterval(upd, 250);
-        upd();
         if (!isTouch()) input.focus();
         $("#team-form").addEventListener("submit", (e) => {
           e.preventDefault();
@@ -1099,7 +1101,10 @@
     // "1-р −30 сек, 2-р −45 сек, 3-р −60 секунд гэх мэтээр" — эхний 3-ыг тохиргооноос
     const pens = CONFIG.hintPenalties.slice(0, 3);
     const penText = pens
-      .map((s, k) => `${k + 1}-р −${s} ${k === pens.length - 1 ? "секунд" : "сек"}`)
+      .map(
+        (s, k) =>
+          `${k + 1}-р −${s} ${k === pens.length - 1 ? "секунд" : "сек"}`,
+      )
       .join(", ");
     swap(
       `
@@ -1116,7 +1121,7 @@
     бүх файлыг түгжжээ.
   </p>
 
-  <p><b>🎯 ТАВИГДАЖ БУЙ ДААЛГАВАР:</b></p>
+  <p><b>🎯Дүрэм:</b></p>
 
   <ul>
     <li><b>6 даалгавар</b> гүйцэтгэнэ.</li>
@@ -1239,7 +1244,8 @@
         if (peek)
           peek.addEventListener("click", () => {
             const inp = $("#answer-input");
-            inp.type = inp.type === "password" ? "text" : "password";
+            // type="password" биш (хөтөч "нууц үг хадгалах уу?" гэж асуухгүй) — CSS-ээр нууна
+            inp.classList.toggle("masked");
           });
         if (st.after) st.after();
         if (!isTouch()) $("#answer-input").focus();
@@ -1401,7 +1407,11 @@
     if ($("#hint-btn")) $("#hint-btn").hidden = true;
     // Анивчилт бүрэн бүрхсэн үед дараагийн шатыг зурна
     setTimeout(() => {
-      if (view === "game" && state.status === "playing" && state.stage === i + 1)
+      if (
+        view === "game" &&
+        state.status === "playing" &&
+        state.stage === i + 1
+      )
         render();
     }, 550);
   }
@@ -1820,7 +1830,7 @@
         state = freshState();
         saveState();
         document.body.classList.remove("lost");
-            if (view === "game") render();
+        if (view === "game") render();
         pushTeamStatus(true);
         return;
       }
@@ -1932,6 +1942,12 @@
   }
 
   function renderLeaderboard() {
+    // Самбар аль хэдийн нээлттэй бол (шинэ баг нэмэгдэх) картыг алга болгож
+    // дахин гаргахгүй — байрандаа шинэчилж, зөвхөн ШИНЭ мөрийг анимацитай гаргана.
+    const live = view === "leaderboard" && $(".app > .board");
+    const seen = new Set(
+      live ? $$(".board-list li[data-id]").map((li) => li.dataset.id) : [],
+    );
     view = "leaderboard";
     updateHUD();
     const list = sortedBoard();
@@ -1943,7 +1959,7 @@
         : state.recorded &&
           norm(e.team) === norm(state.team) &&
           e.time === Math.round(state.finalTime);
-    swap(
+    (live ? (html, after) => ((app.innerHTML = html), after()) : swap)(
       `
     <section class="card board narrow">
       <h1 class="board-title">🏆 HACK THE HALLOWEEN</h1>
@@ -1956,7 +1972,7 @@
         <ol class="board-list">${list
           .map(
             (e, k) => `
-        <li class="${k < 3 ? "r" + (k + 1) : ""}${isMine(e) ? " mine" : ""}" style="animation-delay:${Math.min(k, 12) * 0.05}s">
+        <li data-id="${esc(e.id)}" class="${k < 3 ? "r" + (k + 1) : ""}${isMine(e) ? " mine" : ""}${seen.has(String(e.id)) ? " still" : ""}" style="animation-delay:${live ? 0 : Math.min(k, 12) * 0.05}s">
           <span class="rank">${medal[k] || k + 1}</span>
           <span class="team">${esc(e.team)}${isMine(e) ? ' <span class="you">(Your team)</span>' : ""}</span>
           <span class="time">${fmt(e.time)}</span>
@@ -2168,6 +2184,7 @@
 
       <div class="ctl-label">🚦 START — every PC shows one countdown and starts together</div>
       <div class="btn-row">
+        <button class="btn btn-small" data-start="5" title="Туршилтад: 5 секундын дараа бүх PC эхэлнэ">🧪 TEST: START IN 5s</button>
         <button class="btn btn-small btn-primary" data-start="30">▶ START IN 30s</button>
         <button class="btn btn-small btn-primary" data-start="60">▶ START IN 1 MIN</button>
         <button class="btn btn-small btn-primary" data-start="90">▶ START IN 1 MIN 30s</button>
@@ -2652,8 +2669,12 @@
     // Танихгүй хаяг (жишээ: #leaderbord, ?x=1) → 404 хуудас.
     // Зөвшөөрөгдөх нь: хоосон, #leaderboard, #goonerboi, #hidden-server/<token> (QR)
     const known =
-      !h || h === "#" || h === "#leaderboard" || h === "#goonerboi" ||
-      h === "#hidden-server" || h.startsWith("#hidden-server/");
+      !h ||
+      h === "#" ||
+      h === "#leaderboard" ||
+      h === "#goonerboi" ||
+      h === "#hidden-server" ||
+      h.startsWith("#hidden-server/");
     if (!known || location.search) return location.replace("404.html");
     if (h === "#goonerboi") return renderAdminPage();
     modal.hidden = true;

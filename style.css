@@ -381,6 +381,13 @@ body.has-hud .app { padding-top: calc(var(--hud-h) + 22px); padding-bottom: 22px
 .log { margin: 0; padding-left: 2.6em; counter-reset: none; }
 .log li { padding: 3px 0; color: #b9f5cc; }
 .log li::marker { color: #3c5b48; font-size: 0.85em; }
+.log-ts { color: #3c5b48; font-size: 0.85em; }
+/* 3-р шат: дэвсгэртэй бараг ижил өнгөтэй нуугдсан үсэг — сонгоход тодорно */
+.log .ghost { color: transparent; text-shadow: none; font-weight: bold; }
+.log .ghost::selection { background: var(--green); color: #000; }
+
+/* 1-р шат: сүүлийн 4 байтыг select/copy хийх боломжгүй (гараар бичүүлнэ) */
+.binary .nocopy { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; cursor: default; }
 
 /* QR */
 .qr-wrap { text-align: center; }
@@ -419,6 +426,9 @@ body.has-hud .app { padding-top: calc(var(--hud-h) + 22px); padding-bottom: 22px
 .login-input-row { display: flex; gap: 6px; margin-bottom: 14px; }
 .login-input-row input { flex: 1; min-width: 0; }
 .peek { width: 48px; padding: 0; font-size: 1.1rem; }
+/* 5-р шат: type="text" боловч цэгээр харагдана (хөтөч нууц үг хадгалахыг санал болгохгүй) */
+#answer-input.masked { -webkit-text-security: disc; text-security: disc; }
+#answer-input.masked::placeholder { -webkit-text-security: none; }
 .login-box.granted { border-color: var(--green); box-shadow: 0 0 40px rgba(57, 255, 122, 0.45); }
 .login-box.granted .login-status { color: var(--green); animation: none; text-shadow: 0 0 14px var(--green); }
 
@@ -619,7 +629,20 @@ body.lost #bg-rain { filter: hue-rotate(-120deg) saturate(3); }
 .board-list li {
   padding-top: 12px; padding-bottom: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px;
   font-size: clamp(1rem, 4vw, 1.3rem);
-  animation: slide-in 0.35s ease-out backwards;
+  /* Pixel тоглоом шиг: хажуу тийш "тасархай" чичирч байрандаа ордог */
+  animation: pixel-jolt 0.5s steps(1, end) backwards;
+}
+.board-list li.still { animation: none; } /* шинэчлэлтэд хуучин мөрүүд хөдлөхгүй */
+@keyframes pixel-jolt {
+  0%   { opacity: 0; transform: translateX(-24px); }
+  12%  { opacity: 1; transform: translateX(16px); }
+  24%  { transform: translateX(-12px); }
+  36%  { transform: translateX(8px); }
+  48%  { transform: translateX(-6px); }
+  60%  { transform: translateX(4px); }
+  72%  { transform: translateX(-2px); }
+  84%  { transform: translateX(2px); }
+  100% { opacity: 1; transform: none; }
 }
 .board-list .rank { color: var(--muted); text-align: center; }
 .board-list .team { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
