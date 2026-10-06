@@ -29,12 +29,28 @@
   // (мастер үгийг 6 хэсэгт хуваагаад: Шат1 = 6-р хэсэг, Шат2 = 4-р хэсэг, …)
   const FRAGMENT_ORDER = [5, 3, 2, 0, 4, 1];
   const TOTAL_STAGES = 6;
-  // 📱 Утсан дээрх аюулгүй байдлын асуулт. Зөв сонголт кодонд байхгүй —
-  // зөв сонголтоор л 4-р шатны хэсэг тайлагдана (qrLock).
+  // 📱 Утсан дээрх 2 аюулгүй байдлын асуулт. Сонголтуудыг organizer ⚙ SETTINGS-ээс
+  // өөрчилнө. Зөв хариулт кодонд байхгүй — хоёр зөв сонголтыг хамтад нь
+  // ("A|B") түлхүүр болгож 4-р шатны хэсгийг шифрлэнэ (qrLock). Буруу бол
+  // утас түгжигдэж QR-аа дахин уншуулна (таамгаар дарах боломжгүй).
   const MOBILE_QUIZ = {
-    question: "SECURITY CHECK: Аль нууц үг нь хамгийн ХҮЧТЭЙ вэ?",
+    question: "SECURITY CHECK 1/2: Аль нууц үг нь хамгийн ХҮЧТЭЙ вэ?",
     options: ["password123", "ghost2026", "Pumpk1n!-Night_#31"],
   };
+  const MOBILE_URL_QUIZ = {
+    question: "SECURITY CHECK 2/2: Аль нь EMPASOFT-ийн ЖИНХЭНЭ нэвтрэх хуудас вэ?",
+    options: ["empasoft-login.ru", "emp4soft.edu.mn", "empasoft.edu.mn"],
+  };
+  // Нээлттэй тохиргооноос утасны 2 асуултын сонголт + зөв индекс (хуучин тохиргоонд default)
+  function phoneQuiz(p) {
+    const pick = (opts, def) =>
+      Array.isArray(opts) && opts.length >= 2 ? opts : def;
+    const a = pick(p.mobileQuizOptions, MOBILE_QUIZ.options);
+    const b = pick(p.mobileUrlOptions, MOBILE_URL_QUIZ.options);
+    const ai = Math.min(Math.max(0, Number(p.mobileQuizCorrect ?? 2) || 0), a.length - 1);
+    const bi = Math.min(Math.max(0, Number(p.mobileUrlCorrect ?? 2) || 0), b.length - 1);
+    return { a, b, ai, bi, key: a[ai] + "|" + b[bi] };
+  }
   const b64e = (u8) => {
     let s = "";
     for (const b of u8) s += String.fromCharCode(b);
@@ -184,10 +200,14 @@
       stage3Lines: acrosticLines(lettersOnly(p.stage3Word)),
       stage5Note: p.stage5Note || "",
       stage6Code: p.stage6Code,
-      // Утсан дээрх асуултын зөв сонголтоор 4-р шатны хэсгийг шифрлэнэ
-      qrLock: await makeLock([MOBILE_QUIZ.options[p.mobileQuizCorrect]], {
+      // Утсан дээрх 2 асуултын зөв сонголтоор ("A|B") 4-р шатны хэсгийг шифрлэнэ
+      qrLock: await makeLock([phoneQuiz(p).key], {
         f: norm(p.stage4Fragment),
       }),
+      // 1-р асуултыг тусад нь шалгах түгжээ (буруу бол тэр дор нь ACCESS DENIED)
+      qrLock1: await makeLock([phoneQuiz(p).a[phoneQuiz(p).ai]], { ok: 1 }),
+      // Утсан дээр харуулах сонголтууд (аль нь зөв гэдэг нь энд байхгүй)
+      phoneOpts: { a: phoneQuiz(p).a, b: phoneQuiz(p).b },
       stages,
       final: await makeLock([p.masterPassword], { ok: 1 }),
       vault: {
@@ -394,6 +414,11 @@
       recorded: false,
       boardId: null, // онооны самбар дахь энэ багийн бичлэгийн id
       frozenElapsed: null, // дууссан үеийн нийт хугацаа (сек)
+      decoyTried: false, // 3-р шат: урхи (NICETRY)-г оруулсан эсэх → clipboard нууц ажиллана
+      clipTried: false, // 3-р шат: log-оос хуулсан эсэх → tab-ийн гарчгийн нууц ажиллана
+      clipAt: null, // 3-р шат: хуулсан мөч
+      tabSeen: false, // 3-р шат: хуулсны дараа tab сольсон эсэх
+      s3Live: [], // 3-р шат: "амьд" log-д аль хэдийн бичигдсэн мөрүүд
     };
   }
   // createdAt байхгүй хуучин төлөвийг "маш хуучин" (0) гэж үзнэ
@@ -620,7 +645,11 @@
   // QR код руу оруулах хаяг/текст. Хэсэг нь шифрлэгдсэн (q) — утсан дээрх
   // асуултад зөв хариулж байж л тайлагдана.
   function qrTarget() {
-    const token = encodeToken({ q: CONFIG.qrLock, t: state.team || "" });
+    const token = encodeToken({
+      q: CONFIG.qrLock,
+      ...(CONFIG.phoneOpts ? { o: CONFIG.phoneOpts, q1: CONFIG.qrLock1 } : {}),
+      t: state.team || "",
+    });
     let base = String(CONFIG.qrBaseUrl || "").trim();
     if (!base && /^https?:$/.test(location.protocol))
       base = location.href.split("#")[0];
@@ -646,15 +675,18 @@
     const shift = shiftOf(CONFIG);
     const cipher = CONFIG.stage2Cipher || "";
     const lines = CONFIG.stage3Lines || [];
-    // 3-р шат: мөрүүдийн эхний үсэг = нууц үг. Харагдах мөрүүдийг холиод
-    // (acrostic ажиллахгүй), жинхэнэ үсгүүдийг мөр бүрийн төгсгөлд бараг
-    // үл харагдах өнгөөр дарааллаар нь нууна (Ctrl+A / F12-аар л харагдана).
-    const hiddenLetters = lines.map((l) => (l.trim()[0] || "").toUpperCase());
+    // 3-р шат (гурван алхамтай):
+    //   1) Ctrl+A → тунгалаг хуурамч "SECRET" мөр (NICETRY урхи)
+    //   2) урхийг оруулсны дараа log-оос хуулахад clipboard-д үгийн ЭХНИЙ хагас
+    //   3) дараа нь өөр tab руу шилжихэд tab-ийн гарчигт үгийн ҮЛДСЭН хагас
+    // Харагдах мөрүүдийг хольсон тул эхний үсгээр (acrostic) тайлах боломжгүй.
     const shuffledLines = lines
       .map((l, k) => [l, (k * 5 + 3) % 7 + k / 100])
       .sort((a, b) => a[1] - b[1])
-      .map(([l]) => l);
+      .map(([l]) => l)
+      .slice(0, 3); // дэлгэцэнд 3 мөр л харуулна (NOTES-д зай гаргана)
     const logLevels = ["INFO", "WARN", "ERROR", "INFO", "DEBUG", "WARN", "INFO", "ERROR"];
+    const DECOY_AFTER = Math.min(1, shuffledLines.length - 1); // урхи 2-р мөрийн дараа
     const lock = (k) => (CONFIG.stages || [])[k];
     const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -679,7 +711,7 @@
           "Google-ээс хай.",
         ],
         lesson:
-          "Компьютер үсэг бүрийг тоо болгож хадгалдаг: <b>A = 65 = 01000001</b>. Энэ стандартыг <b>ASCII</b> гэдэг. Таны дэлгэц дээрх бүх бичвэр цаанаа зөвхөн 0, 1-ээс бүтдэг.",
+          "Компьютер үсэг бүрийг тоо болгож хадгалдаг: <b>A = 65 = 01000001</b>. Энэ стандартыг <b>ASCII</b> гэдэг. Таны дэлгэц дээрх бүх бичвэр цаанаа зөвхөн 0, 1 буюу <b>binary</b>-аас бүтдэг.",
       },
 
       /* ---------- ШАТ 2: CAESAR ---------- */
@@ -702,7 +734,7 @@
           `Тайлах хүснэгт (шифрлэгдсэн → жинхэнэ):<div class="abc-grid">${abc.map((c) => `<span><b>${c}</b>→${caesar(c, (26 - shift) % 26)}</span>`).join("")}</div>`,
         ],
         lesson:
-          "Юлий Цезарь энэ шифрийг 2000 орчим жилийн өмнө хэрэглэж байжээ. Өнөөдөр компьютер үүнийг хэдхэн миллисекундэд тайлчихна. Тиймээс бодит системүүд <b>AES</b>, <b>TLS</b> зэрэг хүчтэй шифрлэлт ашигладаг (хөтөч дээрх 🔒 тэмдэг яг үүнийг заадаг).",
+          "<b>Caesar cipher</b>-ийг Юлий Цезарь 2000 орчим жилийн өмнө хэрэглэж байжээ. Өнөөдөр компьютер үүнийг хэдхэн миллисекундэд тайлчихна. Тиймээс бодит системүүд <b>AES</b>, <b>TLS</b> зэрэг хүчтэй <b>encryption</b> ашигладаг (хөтөч дээрх 🔒 тэмдэг яг үүнийг заадаг).",
       },
 
       /* ---------- ШАТ 3: HIDDEN MESSAGE ---------- */
@@ -714,22 +746,33 @@
         puzzle: () => `
         <div class="term">
           <div class="term-label">&gt; cat recovered_log_31-10.txt</div>
-          <ol class="log">${shuffledLines
-            .map(
-              (l, k) =>
-                `<li><span class="log-ts">[23:${pad2(13 + k)}:${pad2((k * 17 + 4) % 60)}] ${logLevels[k % logLevels.length]}</span> ${esc(l)}<span class="ghost">${" ".repeat(6)}${esc(hiddenLetters[k] || "")}</span></li>`,
-            )
-            .join("")}</ol>
+          <ol class="log">${(() => {
+            return shuffledLines
+              .map((l, k) => {
+                const row = `<li><span class="log-ts">[23:${pad2(13 + k)}:${pad2((k * 17 + 4) % 60)}] ${logLevels[k % logLevels.length]}</span> ${esc(l)}</li>`;
+                // Хуурамч нууц мөр — сонгоход л харагдана
+                return k === DECOY_AFTER
+                  ? row + `<li class="decoy"><span class="ghost">[23:31:00] SECRET password=${DECOY_WORD}</span></li>`
+                  : row;
+              })
+              .join("");
+          })()}</ol>
+          <div class="live-log" id="live-log" aria-live="polite">${(state.s3Live || [])
+            .map((k) => liveLogLine(k))
+            .join("")}</div>
+          <label class="scratch-label${state.decoyTried && !state.clipTried ? " nudge" : ""}" id="scratch-label" for="scratch">${state.decoyTried && !state.clipTried ? "📋" : "📝"} NOTES</label>
+          <textarea id="scratch" class="scratch" rows="4" spellcheck="false" placeholder="Тэмдэглэл…"></textarea>
         </div>`,
         label: "нуугдсан мессеж",
         placeholder: "Enter the hidden message…",
         lock: lock(2),
+        after: startStage3Live,
         hints: [
-          "Бүх зүйл нүдэнд харагддаггүй. Хакерууд дэлгэцийг биш, <b>цаад өгөгдлийг</b> нь уншдаг.",
-          "Log-ийг бүхэлд нь <b>сонгоод</b> үз (<code>Ctrl + A</code>), эсвэл <code>F12</code> дарж кодыг нь хар. Мөр бүрийн төгсгөлд нэг үсэг нуугдсан.",
+          "Бүх зүйл нүдэнд харагддаггүй. <code>Ctrl + A</code> дарж, эсвэл хулганаараа чирж log-ийг бүхэлд нь <b>сонгоод</b> үз.",
+          "Урхинд орсон уу? Log-оос юу ч хамаагүй <b>хуулаад</b> (<code>Ctrl + C</code>) <b>NOTES</b> талбарт <b>тавь</b> (<code>Ctrl + V</code>). Үлдсэн хэсгийг нь олохын тулд өөр <b>tab</b> руу шилжээд, энэ тоглоомын tab-ийн <b>нэрийг</b> хар.",
         ],
         lesson:
-          "Энгийн мэт харагдах зүйл дотор мессеж нуухыг <b>стеганографи</b> гэдэг. Халдагчид хамгаалалтын программд баригдахгүйн тулд өгөгдлөө зураг, хөгжим, текст дотор нууж оруулдаг.",
+          "Та <b>copy</b> хийсэн зүйлээ <b>paste</b> хийхэд огт өөр бичиг гарч ирсэн, тийм биз? Вэб сайт таны <b>хуулсан зүйлийг мэдэгдэлгүй сольж</b> чаддаг. Үүнийг <b>clipboard hijacking</b> гэдэг. Жишээ нь луйварчид таны хуулсан дансны дугаарыг өөрийнхөөрөө сольдог. Тиймээс хуулж тавьсан дансны дугаар, хаяг, нууц үгээ илгээхээсээ өмнө <b>заавал нэг шалгаарай</b>.",
       },
 
       /* ---------- ШАТ 4: QR CODE ---------- */
@@ -751,7 +794,7 @@
         after: renderQR,
         hints: [], // QR шатанд hint байхгүй
         lesson:
-          "Бодит амьдрал дээр эзэн нь тодорхойгүй QR кодыг бүү уншуул. <b>“Quishing”</b> буюу QR фишинг гэдэг нь зурагт хуудас, зогсоолын төлбөрийн машин дээр хуурамч QR код наагаад хүмүүсийг луйврын сайт руу оруулдаг арга юм.",
+          "Бодит амьдрал дээр эзэн нь тодорхойгүй QR кодыг бүү уншуул. <b>Quishing</b> (QR phishing) гэдэг нь зурагт хуудас, зогсоолын төлбөрийн машин дээр хуурамч QR код наагаад хүмүүсийг луйврын сайт руу оруулдаг арга юм.",
       },
 
       /* ---------- ШАТ 5: FAKE LOGIN ---------- */
@@ -785,7 +828,7 @@
           "Бүтэц нь: ҮГ + ТОО, зайгүй (жишээ нь <code>CAT3</code>). 2-р шатны үгийн бүх үсгийг тоолоорой.",
         ],
         lesson:
-          "Нууц үгээ энгийн тэмдэглэлд хэзээ ч бүү бич, амархан таагдах мэдээллээр ч бүү зохио. <b>Нууц үг хадгалагч</b> (password manager) ашиглаж, <b>2FA</b> буюу хоёр шатлалт баталгаажуулалтаа заавал асаагаарай.",
+          "Нууц үгээ энгийн тэмдэглэлд хэзээ ч бүү бич, амархан таагдах мэдээллээр ч бүү зохио. <b>Password manager</b> ашиглаж, <b>2FA</b> (two-factor authentication)-аа заавал асаагаарай.",
       },
 
       /* ---------- ШАТ 6: FIND THE BUG ---------- */
@@ -808,7 +851,7 @@
           "Python тоолохдоо <b>0-ээс</b> эхэлдэг: G=0, H=1, O=?, S=3, T=4.",
         ],
         lesson:
-          "Ихэнх програмчлалын хэлэнд тоолол <b>0-ээс</b> эхэлдэг. Нэгээр зөрөх энэ алдааг <b>off-by-one error</b> гэдэг бөгөөд програмистуудын хамгийн түгээмэл алдааны нэг. Кодын өчүүхэн алдаа ч бодит аюулгүй байдлын цоорхой болж хувирдаг тул хөгжүүлэгчид code review, тест заавал ашигладаг.",
+          "Ихэнх програмчлалын хэлэнд <b>index</b> буюу тоолол <b>0-ээс</b> эхэлдэг. Нэгээр зөрөх энэ алдааг <b>off-by-one error</b> гэдэг бөгөөд програмистуудын хамгийн түгээмэл алдааны нэг. Кодын өчүүхэн алдаа ч бодит аюулгүй байдлын цоорхой болж хувирдаг тул хөгжүүлэгчид <b>code review</b>, <b>testing</b> заавал хийдэг.",
       },
     ];
   }
@@ -1266,6 +1309,147 @@
   ];
 
   // lock — шифрлэгдсэн цоож. Зөв хариулт бичвэл onCorrect(тайлагдсан payload).
+  // 3-р шатны хуурамч нууц үг (сонгоход л харагддаг decoy мөрөнд)
+  const DECOY_WORD = "NICETRY";
+  // 3-р шатны нууц үг (мөрүүдийн эхний үсэг) ба түүний хоёр хагас
+  function stage3Halves() {
+    const w = (CONFIG.stage3Lines || [])
+      .map((l) => (l.trim()[0] || "").toUpperCase())
+      .join("");
+    const h = Math.ceil(w.length / 2);
+    return { len: w.length, h, first: w.slice(0, h), rest: w.slice(h) };
+  }
+  const onStage3 = () =>
+    view === "game" &&
+    state.status === "playing" &&
+    getStages()[state.stage]?.key === "hidden";
+
+  // 📋 Clipboard hijack: урхийг оруулсны дараа log-оос хуулахад үгийн эхний хагас
+  function onCopyStage3(e) {
+    if (!onStage3() || !state.decoyTried) return;
+    const log = $(".log"),
+      sel = window.getSelection();
+    if (!log || !sel || sel.isCollapsed || !sel.containsNode(log, true)) return;
+    const { len, h, first } = stage3Halves();
+    e.preventDefault();
+    e.clipboardData.setData(
+      "text/plain",
+      `🔑 НУУЦ ҮГИЙН 1-Р ХЭСЭГ: ${first}${"_".repeat(len - h)}\n\n` +
+        `Үлдсэн ${len - h} үсэг: ӨӨР tab руу шилжээд, энэ тоглоомын tab-ийн нэрийг хар 👀`,
+    );
+    if (!state.clipTried) {
+      state.clipTried = true;
+      state.clipAt = now();
+      saveState();
+      const lbl = $("#scratch-label");
+      if (lbl) {
+        lbl.textContent = "📝 NOTES";
+        lbl.classList.remove("nudge");
+      }
+      setTimeout(() => s3Live("copy"), 600);
+    }
+  }
+
+  // 🗂 Tab-ийн гарчиг: хуулсны дараа өөр tab руу шилжихэд үлдсэн хагасыг үсэг үсгээр бичнэ
+  let titleTimer = null,
+    savedTitle = null;
+  function onVisibilityStage3() {
+    clearInterval(titleTimer);
+    titleTimer = null;
+    if (!document.hidden) {
+      if (savedTitle !== null) document.title = savedTitle;
+      savedTitle = null;
+      return;
+    }
+    if (!onStage3() || !state.clipTried) return;
+    if (!state.tabSeen) {
+      state.tabSeen = true;
+      saveState();
+    }
+    const { h, rest } = stage3Halves();
+    savedTitle = document.title;
+    let n = 0;
+    const draw = () => {
+      // Бичиж дуусаад хэсэг зогсож, дахин эхэлнэ
+      document.title = "🔑 2-р хэсэг: " + "_".repeat(h) + rest.slice(0, Math.min(n, rest.length));
+      n = n > rest.length + 2 ? 0 : n + 1;
+    };
+    draw();
+    titleTimer = setInterval(draw, 1000); // ард байгаа tab-д хөтөч 1 сек-ээс хурдан ажиллуулдаггүй
+  }
+
+  // 🖥 "Амьд" log: hint-гүйгээр тоглогчийг дараагийн алхам руу зөөлөн чиглүүлнэ.
+  // Тоглогчийн үйлдэл (эсвэл удаан гацах)-аас хамаарч вирусын систем шинэ мөр бичнэ.
+  const S3_LIVE = {
+    idle: ["23:31:07", "WARN", "Энэ файлд нүдэнд харагдахгүй бичиг нуугдсан байна. Ctrl + A дарж, эсвэл хулганаараа чирж бүгдийг нь сонгоод үз."],
+    decoy: ["23:31:40", "ERROR", "Хамгаалалт эвдэрлээ! Одоо энэ log-оос юм хуулбал (Ctrl + C) өөр зүйл хуулагдана…"],
+    copy: ["23:32:02", "INFO", "Нууц үгийн 2-р хэсгийг энэ хуудасны tab-ийн нэр рүү илгээлээ…"],
+    tab: ["23:32:30", "WARN", "2-р хэсэг зөвхөн та ӨӨР tab руу шилжсэн үед энэ tab-ийн нэр дээр гарч ирнэ 👀"],
+  };
+  const liveLogLine = (key) => {
+    const [t, lvl, msg] = S3_LIVE[key] || [];
+    return msg
+      ? `<div class="live-line lvl-${lvl.toLowerCase()}">[${t}] ${lvl} ${esc(msg)}</div>`
+      : "";
+  };
+  // Шинэ мөрийг terminal шиг үсэг үсгээр бичнэ (нэг удаа л, state-д хадгална)
+  function s3Live(key) {
+    if (!onStage3()) return;
+    state.s3Live = state.s3Live || [];
+    if (state.s3Live.includes(key)) return;
+    state.s3Live.push(key);
+    saveState();
+    const box = $("#live-log");
+    if (!box) return;
+    const tmp = document.createElement("div");
+    tmp.innerHTML = liveLogLine(key);
+    const line = tmp.firstElementChild;
+    const full = line.textContent;
+    line.textContent = "";
+    line.classList.add("typing");
+    box.appendChild(line);
+    sfx.hint();
+    let i = 0;
+    const ty = setInterval(() => {
+      if (!line.isConnected) return clearInterval(ty);
+      line.textContent = full.slice(0, (i += 4));
+      if (i >= full.length) {
+        clearInterval(ty);
+        line.classList.remove("typing");
+      }
+    }, 20);
+  }
+  // 3-р шат нээгдэх бүрд: гацсан эсэхийг хянах таймер + favicon дохио
+  const FAVICON = (e) =>
+    `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${e}</text></svg>`;
+  let s3Timer = null;
+  function startStage3Live() {
+    clearInterval(s3Timer);
+    const shownAt = now();
+    const icon = document.querySelector('link[rel="icon"]');
+    const baseIcon = icon && icon.getAttribute("href");
+    let blink = false;
+    s3Timer = setInterval(() => {
+      if (!onStage3() || !$("#live-log")) {
+        clearInterval(s3Timer);
+        if (icon) icon.setAttribute("href", baseIcon);
+        return;
+      }
+      // Хүлээлгэхгүй: шат нээгдээд 2 сек-д сонгохыг сануулна
+      if (!state.decoyTried && now() - shownAt > 2000) s3Live("idle");
+      // Хуулсны дараа 3 сек-д tab руу чиглүүлнэ
+      if (state.clipTried && !state.tabSeen && now() - (state.clipAt || 0) > 3000)
+        s3Live("tab");
+      // Хуулсны дараа tab-ийн дүрс 🎃 ↔ 👀 анивчина (tab руу харах дохио)
+      if (icon && state.clipTried && !state.tabSeen) {
+        blink = !blink;
+        icon.setAttribute("href", blink ? FAVICON("👀") : baseIcon);
+      } else if (icon && icon.getAttribute("href") !== baseIcon) {
+        icon.setAttribute("href", baseIcon);
+      }
+    }, 1000);
+  }
+
   function bindAnswerForm(lock, onCorrect) {
     const form = $("#answer-form"),
       input = $("#answer-input"),
@@ -1314,7 +1498,22 @@
       } else {
         btn.disabled = false;
         fb.className = "feedback error";
-        fb.textContent = WRONG_MSGS[wrong++ % WRONG_MSGS.length];
+        const decoy =
+          val === DECOY_WORD && getStages()[state.stage]?.key === "hidden";
+        fb.textContent = decoy
+          ? "😏 Хэтэрхий амархан гэж бодсон уу? Энэ бол урхи."
+          : WRONG_MSGS[wrong++ % WRONG_MSGS.length];
+        // Урхийг оруулсны дараа л clipboard-ийн нууц ажиллаж эхэлнэ
+        if (decoy && !state.decoyTried) {
+          state.decoyTried = true;
+          saveState();
+          s3Live("decoy");
+          const lbl = $("#scratch-label");
+          if (lbl) {
+            lbl.textContent = "📋 NOTES";
+            lbl.classList.add("nudge");
+          }
+        }
         sfx.error();
         form.classList.remove("shake");
         void form.offsetWidth;
@@ -2009,10 +2208,16 @@
       );
       return;
     }
-    // Зөв сонголт кодонд байхгүй — сонгосон хариултаар хэсгийг тайлж үзнэ
-    const quiz = MOBILE_QUIZ;
-    const opts = shuffle(quiz.options);
-    let busy = false;
+    // Зөв сонголт кодонд байхгүй — сонгосон хариултуудаар хэсгийг тайлж үзнэ.
+    // Шинэ тохиргоо (o байгаа): 2 асуулт, түлхүүр = "A|B". Хуучин: 1 асуулт.
+    const two = !!(data.o && Array.isArray(data.o.a) && Array.isArray(data.o.b));
+    const quizzes = two
+      ? [
+          { question: MOBILE_QUIZ.question, options: data.o.a },
+          { question: MOBILE_URL_QUIZ.question, options: data.o.b },
+        ]
+      : [{ question: MOBILE_QUIZ.question.replace(" 1/2", ""), options: MOBILE_QUIZ.options }];
+    const picks = [];
 
     swap(
       `
@@ -2024,39 +2229,69 @@
         const step = $("#srv-step");
         // 1) Хурдан "холбогдож байна" анимаци (~1 сек)
         step.innerHTML = `<div class="server-step"><div class="muted">НУУЦ СЕРВЕРТ ХОЛБОГДОЖ БАЙНА…</div><div class="connect-bar"><i></i></div></div>`;
-        setTimeout(() => {
-          // 2) Аюулгүй байдлын асуулт (том товчнууд)
+        setTimeout(() => askQuiz(0), 950);
+
+        // 2) Аюулгүй байдлын асуултууд — ганц л боломж (буруу бол түгжигдэнэ)
+        function askQuiz(n) {
+          const quiz = quizzes[n];
+          const opts = shuffle(quiz.options);
           step.innerHTML = `
         <div class="server-step">
           ${data.t ? `<div class="team-pill">👥 Холбогдсон баг: ${esc(data.t)}</div>` : ""}
           <div class="quiz-q">🛡 ${esc(quiz.question)}</div>
           <div class="quiz-opts">${opts.map((o, k) => `<button type="button" class="btn" data-k="${k}">${esc(o)}</button>`).join("")}</div>
+          <div class="muted small quiz-warn">⚠ Ганц л боломж! Буруу сонговол холболт тасарна.</div>
           <div class="feedback error" id="quiz-fb" aria-live="polite"></div>
         </div>`;
           $$(".quiz-opts .btn", step).forEach((btn) =>
             btn.addEventListener("click", async () => {
-              if (busy) return;
-              busy = true;
+              picks[n] = opts[Number(btn.dataset.k)];
+              $$(".quiz-opts .btn", step).forEach((b) => (b.disabled = true));
+              btn.classList.add("picked");
+              if (n + 1 < quizzes.length) {
+                // 1-р асуулт буруу бол 2-р асуулт руу оруулахгүй
+                let ok1 = true;
+                if (data.q1) {
+                  try {
+                    ok1 = !!(await openLock(data.q1, picks[n]));
+                  } catch (err) {
+                    ok1 = false;
+                  }
+                }
+                if (!ok1) {
+                  sfx.error();
+                  return lockOut();
+                }
+                sfx.hint();
+                return setTimeout(() => askQuiz(n + 1), 350);
+              }
               let got = null;
               try {
-                got = await openLock(data.q, opts[Number(btn.dataset.k)]);
+                got = await openLock(data.q, two ? picks.join("|") : picks[0]);
               } catch (err) {
                 /* crypto.subtle байхгүй (https биш) */
               }
-              busy = false;
               if (got && got.f) {
                 sfx.success();
                 showFragment(got.f);
               } else {
                 sfx.error();
-                btn.disabled = true;
-                $("#quiz-fb").textContent =
-                  "✖ ACCESS DENIED — энэ нууц үг хэтэрхий сул байна. Дахиад сонгоорой!";
-                btn.classList.add("shake");
+                lockOut();
               }
             }),
           );
-        }, 950);
+        }
+
+        // Буруу хариулт → утас түгжигдэнэ, QR-аа дахин уншуулах ёстой
+        function lockOut() {
+          step.innerHTML = `
+        <div class="server-step">
+          <div class="server-pumpkin">⛔</div>
+          <h1 class="glitch lockout" data-text="ACCESS DENIED">ACCESS DENIED</h1>
+          <p>Хамгаалалтын шалгалтад тэнцсэнгүй. Сервер холболтыг таслав.</p>
+          <p class="muted">Багийнхаа компьютер дээрх <b class="hl-o">QR кодыг дахин уншуулж</b> дахин оролдоорой.</p>
+        </div>`;
+        }
 
         // 3) Fragment харуулах
         function showFragment(fragment) {
@@ -2160,6 +2395,27 @@
     });
   }
 
+  // Утасны асуултын сонголтууд ↔ textarea ("*" = зөв сонголт)
+  const quizText = (opts, correct) =>
+    opts.map((o, k) => (k === correct ? "*" : "") + o).join("\n");
+  function parseQuizText(text) {
+    const lines = String(text)
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+    const options = lines.map((l) => l.replace(/^\*\s*/, ""));
+    const marked = lines
+      .map((l, k) => (l.startsWith("*") ? k : -1))
+      .filter((k) => k >= 0);
+    const valid =
+      options.length >= 2 &&
+      options.length <= 4 &&
+      marked.length === 1 &&
+      new Set(options).size === options.length &&
+      options.every((o) => !o.includes("|"));
+    return { options, correct: marked[0] ?? 0, valid };
+  }
+
   function field(id, label, value, help = "", type = "text", full = false) {
     return `<div class="field ${full ? "full" : ""}"><label for="${id}">${label}</label>
     ${type === "textarea" ? `<textarea id="${id}" spellcheck="false">${esc(value)}</textarea>` : `<input id="${id}" type="${type}" value="${esc(value)}" spellcheck="false">`}
@@ -2232,7 +2488,9 @@
         ${field("s-w2", "STAGE 2 — Caesar word (A–Z)", c.stage2Word, "Cipher text is generated automatically.")}
         ${field("s-shift", "STAGE 2 — shift (1–25)", c.stage2Shift, "", "number")}
         ${field("s-w3", "STAGE 3 — hidden word (A–Z)", c.stage3Word, "Sentences are generated automatically.")}
-        ${field("s-w4", "STAGE 4 — QR fragment", c.stage4Fragment)}
+        ${field("s-w4", "STAGE 4 — QR fragment (утсан дээр гарах нууц үг)", c.stage4Fragment)}
+        ${field("s-pq1", "STAGE 4 — phone Q1: strongest password options", quizText(phoneQuiz(c).a, phoneQuiz(c).ai), "One option per line (2–4). Put <b>*</b> before the correct one.", "textarea")}
+        ${field("s-pq2", "STAGE 4 — phone Q2: real login page options", quizText(phoneQuiz(c).b, phoneQuiz(c).bi), "One option per line (2–4). Put <b>*</b> before the correct one.", "textarea")}
         ${field("s-w5", "STAGE 5 — login password", c.stage5Password, `Empty = automatic (currently <b>${esc(stage5Password(c))}</b>).`)}
         ${field("s-note", "STAGE 5 — admin_notes.txt (empty = default)", c.stage5Note, "", "textarea", true)}
         ${field("s-a6", "STAGE 6 — accepted answers (comma separated)", c.stage6Answers.join(", "), "", "text", true)}
@@ -2254,7 +2512,7 @@
         <table class="key-table" style="margin-top:10px">
           ${keyAnswers.map((a, k) => `<tr><td>STAGE ${k + 1}</td><td><b>${esc(a.join(" / "))}</b> · fragment: <b>${esc(keyFrags[k])}</b></td></tr>`).join("")}
           <tr><td>FINAL</td><td><b>${esc(norm(c.masterPassword))}</b></td></tr>
-          <tr><td>PHONE QUIZ</td><td><b>${esc(MOBILE_QUIZ.options[c.mobileQuizCorrect])}</b></td></tr>
+          <tr><td>PHONE QUIZ</td><td>Q1: <b>${esc(phoneQuiz(c).a[phoneQuiz(c).ai])}</b> · Q2: <b>${esc(phoneQuiz(c).b[phoneQuiz(c).bi])}</b></td></tr>
         </table>
       </details>
     </div>
@@ -2533,8 +2791,16 @@
         masterPassword: norm(v("s-master")),
         finalHint: adminPlain.finalHint,
         qrBaseUrl: v("s-qr").trim(),
-        mobileQuizCorrect: adminPlain.mobileQuizCorrect,
       };
+      // Утасны асуултууд: мөр бүр нэг сонголт, зөвийг нь * -ээр тэмдэглэнэ
+      const pq1 = parseQuizText(v("s-pq1")),
+        pq2 = parseQuizText(v("s-pq2"));
+      Object.assign(next, {
+        mobileQuizOptions: pq1.options,
+        mobileQuizCorrect: pq1.correct,
+        mobileUrlOptions: pq2.options,
+        mobileUrlCorrect: pq2.correct,
+      });
       const problems = [];
       if (!next.hintPenalties.length)
         problems.push("at least one hint penalty number");
@@ -2546,6 +2812,10 @@
       if (next.stage3Word.length < 2)
         problems.push("stage 3 word (2+ letters)");
       if (!next.stage4Fragment) problems.push("stage 4 fragment");
+      if (!pq1.valid)
+        problems.push("phone Q1 (2–4 different options, exactly one with *)");
+      if (!pq2.valid)
+        problems.push("phone Q2 (2–4 different options, exactly one with *)");
       if (!next.stage6Answers.length) problems.push("stage 6 answers");
       if (next.masterPassword.length < 6)
         problems.push("master password (6+ characters)");
@@ -2695,6 +2965,8 @@
     });
 
     window.addEventListener("hashchange", route);
+    document.addEventListener("copy", onCopyStage3);
+    document.addEventListener("visibilitychange", onVisibilityStage3);
     window.addEventListener("resize", updateHUD);
     // Нэг хөтчийн өөр tab-д онооны самбар/тохиргоо шинэчлэгдвэл
     window.addEventListener("storage", (e) => {

@@ -382,9 +382,28 @@ body.has-hud .app { padding-top: calc(var(--hud-h) + 22px); padding-bottom: 22px
 .log li { padding: 3px 0; color: #b9f5cc; }
 .log li::marker { color: #3c5b48; font-size: 0.85em; }
 .log-ts { color: #3c5b48; font-size: 0.85em; }
+/* 3-р шат: "амьд" log — тоглогчийн үйлдлээр шинэ мөр бичигдэнэ */
+.live-log { padding-left: 2.6em; font-size: 0.85rem; line-height: 1.6; }
+.live-line { color: #b9f5cc; }
+.live-line.lvl-warn { color: var(--orange); }
+.live-line.lvl-error { color: var(--red); }
+.live-line.lvl-info { color: #8fd9ff; }
+.live-line.typing::after { content: "█"; animation: blink 0.6s infinite steps(2); margin-left: 2px; }
+.scratch-label.nudge { color: var(--orange); animation: pulse 1.2s infinite; }
+/* 3-р шат: хуулсан зүйлээ тавих тэмдэглэлийн талбар */
+.scratch-label { display: block; margin-top: 12px; color: var(--muted); font-size: 0.85rem; letter-spacing: 0.06em; }
+.scratch {
+  display: block; width: 100%; margin-top: 6px; resize: vertical; min-height: 7.5em;
+  background: transparent; color: #b9f5cc; font: inherit; font-size: 1rem; line-height: 1.5;
+  border: 1px dashed var(--line); border-radius: 4px; padding: 6px 10px;
+}
+.scratch:focus { outline: none; border-color: var(--green); }
 /* 3-р шат: дэвсгэртэй бараг ижил өнгөтэй нуугдсан үсэг — сонгоход тодорно */
 .log .ghost { color: transparent; text-shadow: none; font-weight: bold; }
 .log .ghost::selection { background: var(--green); color: #000; }
+.log li.decoy { counter-increment: list-item 0; } /* дугаарлалтад тооцохгүй */
+.log li.decoy::marker { color: transparent; } /* хуурамч мөрийн дугаар ч харагдахгүй */
+.log li.decoy .ghost::selection { background: var(--red); color: #fff; }
 
 /* 1-р шат: сүүлийн 4 байтыг select/copy хийх боломжгүй (гараар бичүүлнэ) */
 .binary .nocopy { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; cursor: default; }
@@ -887,3 +906,8 @@ body.qr-stage .crt-overlay { display: none; }
   .lessons { margin-top: 10px; }
   .lessons-title { margin-bottom: 8px; }
 }
+
+/* Утасны аюулгүй байдлын асуулт: сонгосон товч, анхааруулга, түгжигдсэн дэлгэц */
+.quiz-opts .btn.picked { border-color: var(--orange); color: var(--orange); background: var(--orange-soft); }
+.quiz-warn { margin-top: 12px; color: var(--orange); }
+.lockout { color: var(--red); }
