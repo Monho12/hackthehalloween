@@ -256,7 +256,7 @@
   // 🔒 Анхны тохиргоо — ШИФРЛЭГДСЭН (хариулт агуулаагүй). build-defaults.mjs үүсгэнэ.
   // Organizer password-оор #admin-д нэвтэрч ⚙ SETTINGS-ээс өөрчилнө.
   // prettier-ignore
-  const SEALED_DEFAULTS = /*SEALED*/{"v":2,"hintPenalties":[30,45,60,90,120],"hintPenaltyEnabled":true,"qrBaseUrl":"","finalHint":"IT туслах ажилтан хамгийн түрүүнд юу гэж асуудаг вэ? “Унтраагаад дахин асаагаад үзсэн үү?” — үүнийг англиар НЭГ үгээр хэлдэг.","stage1Bin":["01000011","01000001","01001110","01000100","01011001"],"stage2Cipher":"KDOORZHHQ","stage2Shift":3,"stage3Lines":["Every file now ends with the same word: boo.","Monitors flicker orange whenever the clock strikes twelve.","Pale light pours out of the locked computer lab.","Abandoned terminals blink with messages nobody typed.","Shadows crawl across the server room at midnight.","Old hard drives spin up all on their own.","Fog crawls slowly under the classroom door.","The clock in the hallway has stopped at 3:13."],"stage5Note":"","stage6Code":"code = \"GHOST\"\n\nif code[3] == \"O\":\n    print(\"ACCESS GRANTED\")","qrLock":{"salt":"p9QtMjIbS+Y3drCoNVTqdw==","boxes":[{"iv":"GXFCp/o8L7ddwe3v","ct":"RIKlRzQtxmrIYkSlpqaayOeBrImxtCQvtx7kah8="}]},"stages":[{"salt":"ouYlFBb2Gbgw0tMMXPeccw==","boxes":[{"iv":"A5zxIhlluj25Ga/c","ct":"f8T/9YIikgI/czzt35Vjrxp96appjMSYzg=="}]},{"salt":"fa6ZSeJjOHAZ2CjzDpRAlQ==","boxes":[{"iv":"7Oo4C3ZHnPUJCP+y","ct":"cQtTtO6lVV1eOHivXEdz8rrKFtnYdRE95A=="}]},{"salt":"5C4Y/cmfA+hyUINRvvNqhQ==","boxes":[{"iv":"STGEj6ZD6KPGTmP+","ct":"UzdoSYbqiFfKO8CmRWd7dmfEL23MDC+E/A=="}]},{"salt":"VXOY+qKJulBK31LVuSPTng==","boxes":[{"iv":"F6Apvrjjua08hBYq","ct":"nH0Jn2mHzQvR+QJID0IEjP79b+SmP+l8WQ=="}]},{"salt":"pHyEeSZ9Vb+4+EV5YYeNpQ==","boxes":[{"iv":"rc2oBC6Jl/NMMe5H","ct":"M8452AWANtFkDYEVSIJ9XRqevPfu0ZioKw=="}]},{"salt":"eLUGWKqVWjN/XDieXzJkYQ==","boxes":[{"iv":"481CxiI8zA+xe9dr","ct":"XpUFHo+ogV1si0ttI3djTdpUmHF4geTDFA=="},{"iv":"VY5fgkEQ0C0rjcor","ct":"6JaJJUCASzM2/wt+SqRDkzNU1micRp7QzA=="},{"iv":"usoOKC9af6d2s2yP","ct":"w2VKNLa4RKd0MT7ErxQX6i0vSj4gPAw9eQ=="},{"iv":"evBxEntJRwcRauwl","ct":"AS5JbxniAGATrE0rB3XOL0qNt81ABNkGsA=="},{"iv":"C10bpo74lOxKdn+9","ct":"ZF4fWwaXkGZCRBRJwAO8iJCOCwzsY0hsog=="},{"iv":"8mnDhk/9kIm0n6Nk","ct":"Wjjz/oYNQ9/YS+tHfZ3ghx/eUrq7UR0+tQ=="}]}],"final":{"salt":"St+DOOFvlFe68CCpe7wpYw==","boxes":[{"iv":"qgXer1W0wyclDUmk","ct":"wvJsQAOZYzfUTJVZKUMgcj7kTbxcIuJT"}]},"vault":{"salt":"D5ZmaNKvI68KSPnxOzusGw==","box":{"iv":"42w/+JwPCE8TpMJ5","ct":"5C+05knA4KQurzGNYMg+1MDP9zk8ytFvEedKFsZEnnoOQk1TSaFbah9CX8A+MOuY5iOloUag8g9tFOokDEH3G/VkH3nc0kyxNF/IPnJOl/foOuXPBYz+XpYVp9U89UDWwWZ1NhGGGjsKjMh+GKkm5QRqyldA/lCyusku+b0VBGaAMJS+pwaPAuqd0x/frZtCtZnJrlV8nfPAtqQ8v30wzJqyMrIPjVsRFsAnlbqU4680v0nrN1CpvFGxFXecm7B1odiHWoS2eJ3bvC+IQgmGREN0s0JisZI/PuwPrHCpM/87YGSWuoICFg14jn+sXv6SHXYuEPmu+M8pSu7SDqjRWrJ7PFZCdQsv1gwXSyT4XBUSEv0sbhKeOcJAiBhwygAa5uXFysCd/CW0JDGgzOp/yJsZx51fjQ5hZhc5N2DH1vAxfx2es6a4gQhkS1R2c2Zf0o0QMBjpo4NQcvkWla107j1TH9ScUpDoU60N4RqiYK55HUl5jOB9Xa0O1pCRL49NQaCmkKZtF3v517CCKEKqO7RLC5X7+LIU2+7rDONYeh/U9mWiF7qwVk8b/GlLPjlpmgFlqmKOyxGCcXO6YxiHNk6TCQH/R3BBPLPCqfj+/9DmYsYHG9rSjlOioh73GNmYicupeR1yQPC1dOSuo964empU/Xtppw0T3V5UKn2AX0BnESpueqG058bEA3ibwdbaC/CXzkNV3xQ6uh0aR+3P1SxBcFFNr2bNs2HzYnyjOnN1YnYjoN4l/AQpY4B7gt7Jmb/CwruPKknSH1Din/solWBAXDC9IdOri6seXVMzTpSspisdxc+2Y3nQvPypuHf8LdwIPfh3ohgwOpk8QWJTM0a8U27/QenJGOmogTCO7CNm5jy7mz70ptw5UsCv6CoRb/eAu6J0L/NLyLnubAkfygq8B/VTwYyxm7ubZHvqrgBMr5FtE+9tTQ=="}}}/*END*/
+  const SEALED_DEFAULTS = /*SEALED*/{"v":2,"hintPenalties":[30],"hintPenaltyEnabled":true,"qrBaseUrl":"","finalHint":"IT туслах ажилтан хамгийн түрүүнд юу гэж асуудаг вэ? “Унтраагаад дахин асаагаад үзсэн үү?” — үүнийг англиар НЭГ үгээр хэлдэг.","stage1Bin":["01000011","01000001","01001110","01000100","01011001"],"stage2Cipher":"KDOORZHHQ","stage2Shift":3,"stage3Lines":["Every file now ends with the same word: boo.","Monitors flicker orange whenever the clock strikes twelve.","Pale light pours out of the locked computer lab.","Abandoned terminals blink with messages nobody typed.","Shadows crawl across the server room at midnight.","Old hard drives spin up all on their own.","Fog crawls slowly under the classroom door.","The clock in the hallway has stopped at 3:13."],"stage5Note":"","stage6Code":"code = \"GHOST\"\n\nif code[3] == \"O\":\n    print(\"ACCESS GRANTED\")","qrLock":{"salt":"p9QtMjIbS+Y3drCoNVTqdw==","boxes":[{"iv":"GXFCp/o8L7ddwe3v","ct":"RIKlRzQtxmrIYkSlpqaayOeBrImxtCQvtx7kah8="}]},"stages":[{"salt":"ouYlFBb2Gbgw0tMMXPeccw==","boxes":[{"iv":"A5zxIhlluj25Ga/c","ct":"f8T/9YIikgI/czzt35Vjrxp96appjMSYzg=="}]},{"salt":"fa6ZSeJjOHAZ2CjzDpRAlQ==","boxes":[{"iv":"7Oo4C3ZHnPUJCP+y","ct":"cQtTtO6lVV1eOHivXEdz8rrKFtnYdRE95A=="}]},{"salt":"5C4Y/cmfA+hyUINRvvNqhQ==","boxes":[{"iv":"STGEj6ZD6KPGTmP+","ct":"UzdoSYbqiFfKO8CmRWd7dmfEL23MDC+E/A=="}]},{"salt":"VXOY+qKJulBK31LVuSPTng==","boxes":[{"iv":"F6Apvrjjua08hBYq","ct":"nH0Jn2mHzQvR+QJID0IEjP79b+SmP+l8WQ=="}]},{"salt":"pHyEeSZ9Vb+4+EV5YYeNpQ==","boxes":[{"iv":"rc2oBC6Jl/NMMe5H","ct":"M8452AWANtFkDYEVSIJ9XRqevPfu0ZioKw=="}]},{"salt":"eLUGWKqVWjN/XDieXzJkYQ==","boxes":[{"iv":"481CxiI8zA+xe9dr","ct":"XpUFHo+ogV1si0ttI3djTdpUmHF4geTDFA=="},{"iv":"VY5fgkEQ0C0rjcor","ct":"6JaJJUCASzM2/wt+SqRDkzNU1micRp7QzA=="},{"iv":"usoOKC9af6d2s2yP","ct":"w2VKNLa4RKd0MT7ErxQX6i0vSj4gPAw9eQ=="},{"iv":"evBxEntJRwcRauwl","ct":"AS5JbxniAGATrE0rB3XOL0qNt81ABNkGsA=="},{"iv":"C10bpo74lOxKdn+9","ct":"ZF4fWwaXkGZCRBRJwAO8iJCOCwzsY0hsog=="},{"iv":"8mnDhk/9kIm0n6Nk","ct":"Wjjz/oYNQ9/YS+tHfZ3ghx/eUrq7UR0+tQ=="}]}],"final":{"salt":"St+DOOFvlFe68CCpe7wpYw==","boxes":[{"iv":"qgXer1W0wyclDUmk","ct":"wvJsQAOZYzfUTJVZKUMgcj7kTbxcIuJT"}]},"vault":{"salt":"D5ZmaNKvI68KSPnxOzusGw==","box":{"iv":"42w/+JwPCE8TpMJ5","ct":"5C+05knA4KQurzGNYMg+1MDP9zk8ytFvEedKFsZEnnoOQk1TSaFbah9CX8A+MOuY5iOloUag8g9tFOokDEH3G/VkH3nc0kyxNF/IPnJOl/foOuXPBYz+XpYVp9U89UDWwWZ1NhGGGjsKjMh+GKkm5QRqyldA/lCyusku+b0VBGaAMJS+pwaPAuqd0x/frZtCtZnJrlV8nfPAtqQ8v30wzJqyMrIPjVsRFsAnlbqU4680v0nrN1CpvFGxFXecm7B1odiHWoS2eJ3bvC+IQgmGREN0s0JisZI/PuwPrHCpM/87YGSWuoICFg14jn+sXv6SHXYuEPmu+M8pSu7SDqjRWrJ7PFZCdQsv1gwXSyT4XBUSEv0sbhKeOcJAiBhwygAa5uXFysCd/CW0JDGgzOp/yJsZx51fjQ5hZhc5N2DH1vAxfx2es6a4gQhkS1R2c2Zf0o0QMBjpo4NQcvkWla107j1TH9ScUpDoU60N4RqiYK55HUl5jOB9Xa0O1pCRL49NQaCmkKZtF3v517CCKEKqO7RLC5X7+LIU2+7rDONYeh/U9mWiF7qwVk8b/GlLPjlpmgFlqmKOyxGCcXO6YxiHNk6TCQH/R3BBPLPCqfj+/9DmYsYHG9rSjlOioh73GNmYicupeR1yQPC1dOSuo964empU/Xtppw0T3V5UKn2AX0BnESpueqG058bEA3ibwdbaC/CXzkNV3xQ6uh0aR+3P1SxBcFFNr2bNs2HzYnyjOnN1YnYjoN4l/AQpY4B7gt7Jmb/CwruPKknSH1Din/solWBAXDC9IdOri6seXVMzTpSspisdxc+2Y3nQvPypuHf8LdwIPfh3ohgwOpk8QWJTM0a8U27/QenJGOmogTCO7CNm5jy7mz70ptw5UsCv6CoRb/eAu6J0L/NLyLnubAkfygq8B/VTwYyxm7ubZHvqrgBMr5FtE+9tTQ=="}}}/*END*/
 
   /* ================================================================
    1. ТОХИРГОО — анхны (default) утгууд.
@@ -266,11 +266,9 @@
     // ⏱ Нийт хугацаа (минут). #admin → TOTAL TIME-аар бүх PC-д өөрчилнө.
     timerMinutes: 15,
 
-    // 💡 Сануулгын торгууль (секунд) — ТОГЛООМ ДАХЬ НИЙТ hint-ийн тоогоор өснө.
-    // 1-р hint +30с, 2-р +45с, 3-р +60с, 4-р +90с, 5-р болон түүнээс хойш +120с.
-    // Олон hint авсан баг финалын цаг нь их нэмэгдэж, онооны самбарт доогуур орно.
+    // 💡 Сануулгын торгууль (секунд) — хэд дэх hint байхаас үл хамааран бүгд ижил (−30с).
     hintPenaltyEnabled: true,
-    hintPenalties: [30, 45, 60, 90, 120],
+    hintPenalties: [30],
 
     // 📱 QR кодын үндсэн хаяг. Хоосон бол одоогийн хуудасны хаягийг автоматаар авна.
     // Жишээ: 'https://username.github.io/hack-the-halloween/'
@@ -700,7 +698,7 @@
         puzzle: () => `
         <div class="term">
           <div class="term-label">&gt; cat intercepted_signal.bin</div>
-          <div class="binary">${bytes.map((b, k) => `<span${k >= bytes.length - 4 ? ' class="nocopy"' : ""}>${b}</span>`).join("")}</div>
+          <div class="binary">${bytes.map((b, k) => `<span${k >= 1 ? ' class="nocopy"' : ""}>${b}</span>`).join("")}</div>
           <div class="term-foot">1 байт = 8 бит = 1 үсэг | ${bytes.length} байт = ${Math.ceil(bytes.length)} үсэг</div>
         </div>`,
         label: "тайлсан үг",
@@ -708,7 +706,7 @@
         lock: lock(0),
         hints: [
           "Binary-г эхлээд Decimal болго. Дараа нь Text рүү хөрвүүлээд үз.",
-          "Google-ээс хай.",
+          "Google-ээс асууна уу.",
         ],
         lesson:
           "Компьютер үсэг бүрийг тоо болгож хадгалдаг: <b>A = 65 = 01000001</b>. Энэ стандартыг <b>ASCII</b> гэдэг. Таны дэлгэц дээрх бүх бичвэр цаанаа зөвхөн 0, 1 буюу <b>binary</b>-аас бүтдэг.",
@@ -719,7 +717,7 @@
         key: "caesar",
         title: "CAESAR CIPHER",
         mission:
-          "Вирус нэг чухал үгийг нуужээ. Үсэг бүр нь байрнаасаа шилжсэн байна. Жинхэнэ үгийг нь ол.",
+          "Вирус нэг чухал үгийг нуужээ. Үсэг бүр нь байрнаасаа шилжсэн байна. Жинхэнэ үгийг ол.",
         puzzle: () => `
         <div class="term cipher-wrap">
           <div class="term-label">&gt; cat encrypted_message.txt</div>
@@ -768,8 +766,11 @@
         lock: lock(2),
         after: startStage3Live,
         hints: [
-          "Бүх зүйл нүдэнд харагддаггүй. <code>Ctrl + A</code> дарж, эсвэл хулганаараа чирж log-ийг бүхэлд нь <b>сонгоод</b> үз.",
-          "Урхинд орсон уу? Log-оос юу ч хамаагүй <b>хуулаад</b> (<code>Ctrl + C</code>) <b>NOTES</b> талбарт <b>тавь</b> (<code>Ctrl + V</code>). Үлдсэн хэсгийг нь олохын тулд өөр <b>tab</b> руу шилжээд, энэ тоглоомын tab-ийн <b>нэрийг</b> хар.",
+          "Сонгоход гарч ирдэг <b>SECRET password=…</b> мөр бол <b>урхи</b>, жинхэнэ хариу биш. Гэхдээ тэр үгийг хариултын талбарт <b>заавал нэг оруул</b>. Тэгж байж дараагийн нууц нээгдэнэ.",
+          (() => {
+            const { len, h, first } = stage3Halves();
+            return `Хариу нь <b>${len} үсэгтэй</b>, <b>"${first[0] || "?"}"</b> үсгээр эхэлдэг англи үг. Хоёр хэсэгт хуваагдсан:<br/><br>&emsp;1) Урхийг оруулсны дараа log-оос юу ч хамаагүй хуулаад (<code>Ctrl + C</code>) <b>NOTES</b>-д тавь (<code>Ctrl + V</code>) → эхний <b>${h}</b> үсэг.<br><br>&emsp;2) Өөр tab руу шилжээд энэ тоглоомын <b>tab-ийн нэрийг</b> хар → үлдсэн <b>${len - h}</b> үсэг. Хоёуланг нь <b>залгаад</b> оруул.`;
+          })(),
         ],
         lesson:
           "Та <b>copy</b> хийсэн зүйлээ <b>paste</b> хийхэд огт өөр бичиг гарч ирсэн, тийм биз? Вэб сайт таны <b>хуулсан зүйлийг мэдэгдэлгүй сольж</b> чаддаг. Үүнийг <b>clipboard hijacking</b> гэдэг. Жишээ нь луйварчид таны хуулсан дансны дугаарыг өөрийнхөөрөө сольдог. Тиймээс хуулж тавьсан дансны дугаар, хаяг, нууц үгээ илгээхээсээ өмнө <b>заавал нэг шалгаарай</b>.",
@@ -1141,14 +1142,7 @@
   }
 
   function renderBriefing() {
-    // "1-р −30 сек, 2-р −45 сек, 3-р −60 секунд гэх мэтээр" — эхний 3-ыг тохиргооноос
-    const pens = CONFIG.hintPenalties.slice(0, 3);
-    const penText = pens
-      .map(
-        (s, k) =>
-          `${k + 1}-р −${s} ${k === pens.length - 1 ? "секунд" : "сек"}`,
-      )
-      .join(", ");
+    const penText = `−${Number(CONFIG.hintPenalties[0]) || 0} секунд`;
     swap(
       `
     <section class="card brief narrow">
@@ -1174,7 +1168,7 @@
 
   <div class="rules">
     ⏱ <b id="brief-minutes">${Math.round(gameDuration() / 60)}</b> <b>минутын</b> хугацаатай<br>
-    💡 ${CONFIG.hintPenaltyEnabled ? `Hint бүрт хугацаанаас: <b>${esc(penText)}</b> гэх мэтээр хасагдана` : "Hint ашиглахад хугацаа хасагдахгүй"}<br>
+    💡 ${CONFIG.hintPenaltyEnabled ? `Hint бүрт хугацаанаас <b>${esc(penText)}</b> хасагдана` : "Hint ашиглахад хугацаа хасагдахгүй"}<br>
     📱 Нэг <b>утас</b> бэлэн байлгаарай, нэг даалгаврыг утсаар гүйцэтгэнэ.<br>
     🤝 Багаараа ажилла. Ярилц. Ажлаа хуваа.<br>
     🏆 <b>Мастер нууц үгийг хамгийн түрүүлж бүтээсэн баг ялна!</b>
@@ -1346,7 +1340,6 @@
         lbl.textContent = "📝 NOTES";
         lbl.classList.remove("nudge");
       }
-      setTimeout(() => s3Live("copy"), 600);
     }
   }
 
@@ -1381,10 +1374,9 @@
   // 🖥 "Амьд" log: hint-гүйгээр тоглогчийг дараагийн алхам руу зөөлөн чиглүүлнэ.
   // Тоглогчийн үйлдэл (эсвэл удаан гацах)-аас хамаарч вирусын систем шинэ мөр бичнэ.
   const S3_LIVE = {
-    idle: ["23:31:07", "WARN", "Энэ файлд нүдэнд харагдахгүй бичиг нуугдсан байна. Ctrl + A дарж, эсвэл хулганаараа чирж бүгдийг нь сонгоод үз."],
-    decoy: ["23:31:40", "ERROR", "Хамгаалалт эвдэрлээ! Одоо энэ log-оос юм хуулбал (Ctrl + C) өөр зүйл хуулагдана…"],
-    copy: ["23:32:02", "INFO", "Нууц үгийн 2-р хэсгийг энэ хуудасны tab-ийн нэр рүү илгээлээ…"],
-    tab: ["23:32:30", "WARN", "2-р хэсэг зөвхөн та ӨӨР tab руу шилжсэн үед энэ tab-ийн нэр дээр гарч ирнэ 👀"],
+    idle: ["23:31:07", "WARN", "Энэ файлд нүдэнд үл харагдах бичиг нуугдсан байна. Ctrl + A дарж эсвэл хулганаараа чирж бүхнийг сонгоод, нуугдсан бичгийг ол..."],
+    decoy: ["23:31:40", "ERROR", "Хамгаалалт эвдэрлээ! Одоо энэ log-оос текст хуулбал (Ctrl + C), өөр мэдээлэл хуулагдана."],
+    tab: ["23:32:30", "WARN", "2-р хэсэг зөвхөн өөр tab руу шилжихэд энэ tab-ийн нэр дээр гарч ирнэ."],
   };
   const liveLogLine = (key) => {
     const [t, lvl, msg] = S3_LIVE[key] || [];
@@ -1526,13 +1518,9 @@
   function bindHints(stageIdx, hints) {
     const btn = $("#hint-btn"),
       list = $("#hint-list");
-    // Дараагийн hint-ийн торгууль = тоглоом дахь нийт hint-ийн тоогоор (шат бүрээр биш)
-    const penaltyFor = (k = hintsUsedTotal()) =>
-      CONFIG.hintPenaltyEnabled
-        ? Number(
-            CONFIG.hintPenalties[Math.min(k, CONFIG.hintPenalties.length - 1)],
-          ) || 0
-        : 0;
+    // Hint бүрийн торгууль ижил (хэд дэх hint байхаас үл хамаарна)
+    const penaltyFor = () =>
+      CONFIG.hintPenaltyEnabled ? Number(CONFIG.hintPenalties[0]) || 0 : 0;
     // Hint-үүдийг доош овоолохгүй: нэг удаад НЭГИЙГ л харуулна (хуудас уртсахгүй,
     // scroll хийх шаардлагагүй). Авсан hint-үүдийн хооронд HINT 1 / HINT 2 табаар шилжинэ.
     const tabs = $("#hint-tabs");
@@ -1644,7 +1632,7 @@
       `
     <section class="card final-card narrow">
       <div class="final-warn glitch" data-text="⚠️ FINAL SYSTEM">⚠️ FINAL SYSTEM</div>
-      <div class="final-sub">Бүх сэжүүр цугларлаа.</div>
+      <p class="final-sub">Бүх сэжүүр цугларлаа.</p>
       <p class="center muted">Вирус мастер түлхүүрийн 6 үсгийг салгаж, холиод нуужээ. Танай баг олсон үсгүүд:</p>
       <div class="frag-row">
         ${Array.from({ length: TOTAL_STAGES }, (_, k) => `<div class="frag" style="animation-delay:${k * 0.08}s"><small>STAGE ${k + 1}</small><b>${esc(fragmentFor(k))}</b></div>`).join("")}
@@ -2482,7 +2470,7 @@
     <div class="admin-sec">
       <h3>⚙ SETTINGS (ALL PCs — saved changes apply to every PC instantly)</h3>
       <div class="form-grid">
-        ${field("s-pen", "HINT PENALTIES (seconds, comma separated)", c.hintPenalties.join(", "), "Counts ALL hints in the game: 1st hint, 2nd hint, … (the last value repeats). Grows so teams can't spam hints.")}
+        ${field("s-pen", "HINT PENALTY (seconds)", c.hintPenalties[0], "Same penalty for every hint, no matter how many a team takes.")}
         <div class="field full"><label class="check"><input type="checkbox" id="s-penon" ${c.hintPenaltyEnabled ? "checked" : ""}> Hint time penalty enabled</label></div>
         ${field("s-w1", "STAGE 1 — binary word (A–Z)", c.stage1Word, "Binary is generated automatically.")}
         ${field("s-w2", "STAGE 2 — Caesar word (A–Z)", c.stage2Word, "Cipher text is generated automatically.")}

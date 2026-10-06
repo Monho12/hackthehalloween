@@ -405,7 +405,7 @@ body.has-hud .app { padding-top: calc(var(--hud-h) + 22px); padding-bottom: 22px
 .log li.decoy::marker { color: transparent; } /* хуурамч мөрийн дугаар ч харагдахгүй */
 .log li.decoy .ghost::selection { background: var(--red); color: #fff; }
 
-/* 1-р шат: сүүлийн 4 байтыг select/copy хийх боломжгүй (гараар бичүүлнэ) */
+/* 1-р шат: эхний байтаас бусдыг select/copy хийх боломжгүй (гараар бичүүлнэ) */
 .binary .nocopy { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; cursor: default; }
 
 /* QR */
